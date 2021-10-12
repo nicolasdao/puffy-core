@@ -108,6 +108,7 @@ console.log(formatDate(refDate, { format:'ddMMyyyy' })) // '12102021'
 console.log(formatDate(refDate, { format:'MMyy' })) // '1021'
 console.log(formatDate(refDate, { format:'dd/MM/yy' })) // '12/10/21'
 console.log(formatDate(refDate, { format:'dd/MM/yy HH:mm:ss' })) // '12/10/21 13:45:21'
+console.log(formatDate(refDate, { format:'dd/MM/yy HH:mm:ss', utc:true })) // '12/10/21 03:45:21'
 console.log(formatDate(refDate, { format:'The dd of MMM, yyyy' })) // 'The 12 of October, 2021'
 console.log(formatDate(refDate, { format:'The dd{nth} of MMM, yyyy' })) // 'The 12th of October, 2021'
 ```
