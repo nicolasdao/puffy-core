@@ -40,8 +40,8 @@ console.log(uniq([{ name:'Ben' },{ name:'Ben' },{ name:'Jerry' }], x => x.name))
 // sortBy
 console.log(sortBy([2,1,4,3])) // [1,2,3,4]
 console.log(sortBy([2,1,4,3], 'desc')) // [4,3,2,1]
-console.log(sortBy([{ name:'Nic', age:40 }, { name:'Paul', age:50 }, { name:'Lin', age:30 }], x => x.age) // [{ name:'Lin', age:30 }, { name:'Nic', age:40 }, { name:'Paul', age:50 }]
-console.log(sortBy([{ name:'Nic', age:40 }, { name:'Paul', age:50 }, { name:'Lin', age:30 }], x => x.age, 'desc') // [{ name:'Paul', age:50 }, { name:'Nic', age:40 }, { name:'Lin', age:30 }]
+console.log(sortBy([{ name:'Nic', age:40 }, { name:'Paul', age:50 }, { name:'Lin', age:30 }], x => x.age)) // [{ name:'Lin', age:30 }, { name:'Nic', age:40 }, { name:'Paul', age:50 }]
+console.log(sortBy([{ name:'Nic', age:40 }, { name:'Paul', age:50 }, { name:'Lin', age:30 }], x => x.age, 'desc')) // [{ name:'Paul', age:50 }, { name:'Nic', age:40 }, { name:'Lin', age:30 }]
 
 // seed
 console.log(seed(3)) // [undefined, undefined, undefined]
