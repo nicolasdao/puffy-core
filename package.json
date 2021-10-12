@@ -1,0 +1,43 @@
+{
+  "name": "puffy-core",
+  "version": "0.0.1",
+  "description": "A collection of ES6 modules with zero-dependencies to help manage common programming tasks in both NodeJS or native JS.",
+  "exports": {
+    "./collection": "./src/collection.js",
+    "./converter": "./src/converter.js",
+    "./date": "./src/date.js",
+    "./error": "./src/error.js",
+    "./math": "./src/math.js",
+    "./obj": "./src/obj.js",
+    "./string": "./src/string.js",
+    "./time": "./src/time.js",
+    "./url": "./src/url.js",
+    "./validate": "./src/validate.js"
+  },
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nicolasdao/puffy-core.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nicolasdao/puffy-core/issues"
+  },
+  "homepage": "https://github.com/nicolasdao/puffy-core#readme",
+  "scripts": {
+    "dev": "TZ=UTC NODE_ENV=dev node index.js",
+    "lint": "eslint src/ test/ --fix",
+    "push": "git push --follow-tags origin master && npm publish",
+    "rls": "standard-version --release-as",
+    "start": "TZ=UTC NODE_ENV=production node index.js",
+    "test": "mocha --exit",
+    "v": "node -e \"console.log(require('./package.json').version)\""
+  },
+  "author": "Nicolas Dao",
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "eslint": "^7.32.0",
+    "mocha": "^9.1.2",
+    "standard-version": "^9.3.1"
+  }
+}
