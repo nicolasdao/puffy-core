@@ -12,7 +12,8 @@
     "./string": "./src/string.js",
     "./time": "./src/time.js",
     "./url": "./src/url.js",
-    "./validate": "./src/validate.js"
+    "./validate": "./src/validate.js",
+    "./package.json": "./package.json"
   },
   "type": "module",
   "repository": {
