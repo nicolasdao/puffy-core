@@ -83,30 +83,6 @@ console.log(nbrToCurrency(123, '£')) // '£123.00'
 ## `crypto`
 
 ```js
-import { addZero, nbrToCurrency } from 'puffy-core/converter'
-
-// addZero
-console.log(addZero(123,10)) // '0000000123'
-
-// nbrToCurrency
-console.log(nbrToCurrency(123)) // '$123.00'
-console.log(nbrToCurrency(123, '$')) // '$123.00'
-console.log(nbrToCurrency(123, 'dollar')) // '$123.00'
-
-console.log(nbrToCurrency(123, 'euro')) // '€123.00'
-console.log(nbrToCurrency(123, '€')) // '€123.00'
-
-console.log(nbrToCurrency(123, 'yen')) // '¥123.00'
-console.log(nbrToCurrency(123, 'yuan')) // '¥123.00'
-console.log(nbrToCurrency(123, '¥')) // '¥123.00'
-
-console.log(nbrToCurrency(123, 'pound')) // '£123.00'
-console.log(nbrToCurrency(123, '£')) // '£123.00'
-```
-
-## `crypto`
-
-```js
 import { encoder, jwtDecode } from 'puffy-core/crypto'
 
 // encoder
@@ -139,6 +115,7 @@ console.log(binToHex('0110100001100101011011000110110001101111001000000111011101
 
 // jwtDecode
 const { header, payload, signBase64 } = jwtDecode('YOUR JWT TOKEN HERE')
+const data = jwtDecode('YOUR JWT TOKEN HERE', { noFail:true }) // The 'noFail' option returns null instead of throwing an exception when the token is invalid.
 ```
 
 ## `date`

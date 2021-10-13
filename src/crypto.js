@@ -82,9 +82,10 @@ export const encoder = fromEncoding => {
 /**
  * Decodes a JWT.
  * 
- * @param  {String} token		JWT string token
+ * @param  {String}  token			JWT string token
+ * @param  {Boolean} options.noFail	Default false. True means that invalid tokens don't throw an exception but return null instead.
  * 
- * @return {Object} jwt
+ * @return {Object}  jwt
  * @return {Object} 	.header
  * @return {String} 		.kid
  * @return {String} 		.alg	e.g., 'RS256'
@@ -97,16 +98,22 @@ export const encoder = fromEncoding => {
  * @return {Number} 		.iat	Issued at epoc time. Unit seconds (e.g., 1634087136)
  * @return {String} 	.signBase64
  */
-export const jwtDecode  = token => {
+export const jwtDecode  = (token, options) => {
 	if (!token)
 		return null
 
-	const [headerBase64, payloadBase64, signBase64] = token.split('.')
+	try {
+		const [headerBase64, payloadBase64, signBase64] = token.split('.')
 
-	return {
-		header: _base64ToJson(headerBase64),
-		payload: _base64ToJson(payloadBase64),
-		signBase64
+		return {
+			header: _base64ToJson(headerBase64),
+			payload: _base64ToJson(payloadBase64),
+			signBase64
+		}
+	} catch(err) {
+		if (options && options.noFail)
+			return null
+		throw err
 	}
 }
 

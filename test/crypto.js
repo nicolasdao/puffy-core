@@ -78,6 +78,21 @@ describe('crypto', () => {
 			})
 			assert.equal(signBase64, 'XCJKcdQcC96R_gyY8VV_k1RbSEOLD0yOMVWkxbjPQYANVEhh269LRWwqyRO4WD5835BFpT8cUsVDGKDsSYdDx9phE-3fw3AK5EqthnrwYaq1VKhQOVJL-sOSA6CUSuLwBsRLfdHO4gzFwuNMXuKtQVwCiNhsr-8hpDv6_2PLVSDP_kkviUU2X50cqkQc7MnyEZfHPjsgm06O9eRaJ45lX8dd-g8BQdur5KNQoxAmKHZwwiCuaXg8Bs2l4kPxpJwaVHybMaMLa-9szDHQ0vfOvH54gVgApgCJL2smb9C3QBbnXH54nLGgGYuI7f0L_oiTNWB0a1N6Meh6ObckXO8-LQ')
 		})
+		it('02 - Should throw an exception when the token in invalid.', () => {
+			try {
+				jwtDecode('edew')
+				throw new Error('Should have failed')
+			} catch(err) {
+				if (err.message == 'Should have failed')
+					throw err
+				else
+					assert.isOk(err)
+			}
+		})
+		it('03 - Should support a noFail mode that returns null rather then throwing an exception.', () => {
+			const data = jwtDecode('edew', { noFail:true })			
+			assert.isNotOk(data)
+		})
 	})
 })
 
