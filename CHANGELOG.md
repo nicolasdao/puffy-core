@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.1.0](https://github.com/nicolasdao/puffy-core/compare/v0.0.3...v0.1.0) (2021-10-13)
+
+
+### Features
+
+* Add support for a crypto module that can encode and decode + a fetch API for browser only ([7fa6b6f](https://github.com/nicolasdao/puffy-core/commit/7fa6b6f05befe0b19a83ce03d25bb5754f8a0502))
+
 ### [0.0.3](https://github.com/nicolasdao/puffy-core/compare/v0.0.2...v0.0.3) (2021-10-12)
 
 ### 0.0.2 (2021-10-12)
