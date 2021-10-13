@@ -31,7 +31,7 @@ describe('time', () => {
 		it('02 - Should support cancelling a delayed execution.', done => {
 			const seq = []
 			const start = Date.now()
-			const d_01 = delay(20)
+			const d_01 = delay(30)
 			const d_03 = delay(15)
 			const d_02 = delay(10).then(() => d_01.cancel())
 			d_01.then(() => seq.push({ id:3, time: Date.now() - start }))

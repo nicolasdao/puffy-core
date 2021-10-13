@@ -13,6 +13,7 @@ npm i puffy-core
 > * [APIs](#apis)
 >	- [`collection`](#collection)
 >	- [`converter`](#converter)
+>	- [`crypto`](#crypto)
 >	- [`date`](#date)
 >	- [`error`](#error)
 >	- [`math`](#math)
@@ -21,6 +22,8 @@ npm i puffy-core
 >	- [`time`](#time)
 >	- [`url`](#url)
 >	- [`validate`](#validate)
+>	- [Browser Only APIs](#browser-only-apis)
+>		- [`browser/fetch`](#browserfetch)
 > * [Unit test](#unit-test)
 > * [License](#license)
 
@@ -75,6 +78,67 @@ console.log(nbrToCurrency(123, '¥')) // '¥123.00'
 
 console.log(nbrToCurrency(123, 'pound')) // '£123.00'
 console.log(nbrToCurrency(123, '£')) // '£123.00'
+```
+
+## `crypto`
+
+```js
+import { addZero, nbrToCurrency } from 'puffy-core/converter'
+
+// addZero
+console.log(addZero(123,10)) // '0000000123'
+
+// nbrToCurrency
+console.log(nbrToCurrency(123)) // '$123.00'
+console.log(nbrToCurrency(123, '$')) // '$123.00'
+console.log(nbrToCurrency(123, 'dollar')) // '$123.00'
+
+console.log(nbrToCurrency(123, 'euro')) // '€123.00'
+console.log(nbrToCurrency(123, '€')) // '€123.00'
+
+console.log(nbrToCurrency(123, 'yen')) // '¥123.00'
+console.log(nbrToCurrency(123, 'yuan')) // '¥123.00'
+console.log(nbrToCurrency(123, '¥')) // '¥123.00'
+
+console.log(nbrToCurrency(123, 'pound')) // '£123.00'
+console.log(nbrToCurrency(123, '£')) // '£123.00'
+```
+
+## `crypto`
+
+```js
+import { encoder, jwtDecode } from 'puffy-core/crypto'
+
+// encoder
+const stringEncoder = encoder()
+const stringToBase64 = stringEncoder('base64')
+const stringToBin = stringEncoder('bin')
+const stringToHex = stringEncoder('hex')
+
+const base64Encoder = encoder('base64')
+const base64ToString = base64Encoder()
+const base64ToBin = base64Encoder('bin')
+const base64ToHex = base64Encoder('hex')
+
+const binEncoder = encoder('bin')
+const binToString = binEncoder()
+const binToBase64 = binEncoder('base64')
+const binToHex = binEncoder('hex')
+
+console.log(stringToBase64('hello world')) // 'aGVsbG8gd29ybGQ='
+console.log(stringToBin('hello world')) // '0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100'
+console.log(stringToHex('hello world')) // '68656C6C6F20776F726C64'
+
+console.log(base64ToString('aGVsbG8gd29ybGQ=')) // 'hello world'
+console.log(base64ToBin('aGVsbG8gd29ybGQ=')) // '0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100'
+console.log(base64ToHex('aGVsbG8gd29ybGQ=')) // '68656C6C6F20776F726C64'
+
+console.log(binToString('0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100')) // 'hello world'
+console.log(binToBase64('0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100')) // 'aGVsbG8gd29ybGQ='
+console.log(binToHex('0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100')) // '68656C6C6F20776F726C64'
+
+// jwtDecode
+const { header, payload, signBase64 } = jwtDecode('YOUR JWT TOKEN HERE')
 ```
 
 ## `date`
@@ -315,6 +379,63 @@ console.log(validateUrl('https://neap.co')) // true
 console.log(validateUrl('hello')) // false
 console.log(validateEmail('nic@neap.co')) // true
 console.log(validateEmail('nic @neap.co')) // false
+```
+
+## Browser Only APIs
+### `browser/fetch`
+
+```js
+import { fetch as _fetch } from 'puffy-core/browser/fetch'
+
+const main = async () => {
+	// fetch
+	const { status, data } = await _fetch.get({
+		uri: 'http://localhost:4220/entry/32',
+		headers: {
+			'Content-Type': 'multipart/form-data'
+		},
+		body: {
+			hello: 'World',
+			myFile: document.querySelector('input[type="file"]').files[0]
+		}
+	})
+
+	// POST URL encoded data
+	const { status:status2, data:data2 } = await _fetch.post({
+		uri: 'http://localhost:4220/entry/32',
+		headers: {
+			'Content-Type': 'application/x-www-form-urlencoded'
+		},
+		body: {
+			hello: 'World'
+		}
+	})
+
+	// GraphQL
+	const { status:status3, data:data3 } = await _fetch.graphql.query({ 
+		uri: 'http://localhost:4220/graphql', 
+		headers:{}, 
+		query: `{ 
+			users(where:{ id:1 }){ 
+				id 
+				name 
+			} 
+		}` 
+	})
+
+	const { status:status4, data:data4 } = await _fetch.graphql.mutate({ 
+		uri: 'http://localhost:4220/graphql', 
+		headers:{}, 
+		query: `{ 
+			userInsert(input:{ name:"Nic" }){ 
+				id 
+				name 
+			} 
+		}` 
+	})
+}
+
+main()
 ```
 
 # Unit test
