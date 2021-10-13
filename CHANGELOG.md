@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.1](https://github.com/nicolasdao/puffy-core/compare/v0.1.0...v0.1.1) (2021-10-13)
+
+
+### Features
+
+* Add support for optionally not failing when decoding a JWT token ([f00c673](https://github.com/nicolasdao/puffy-core/commit/f00c673bd795ffd79c6b749c6c33df12895ebef4))
+
 ## [0.1.0](https://github.com/nicolasdao/puffy-core/compare/v0.0.3...v0.1.0) (2021-10-13)
 
 

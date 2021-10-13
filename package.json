@@ -1,6 +1,6 @@
 {
   "name": "puffy-core",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "A collection of ES6 modules with zero-dependencies to help manage common programming tasks in both NodeJS or native JS.",
   "exports": {
     "./browser/fetch": "./src/browser/fetch.js",
