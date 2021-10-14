@@ -4,21 +4,19 @@
   "description": "A collection of ES6 modules with zero-dependencies to help manage common programming tasks in both NodeJS or native JS.",
   "main": "./dist/index.cjs",
   "exports": {
-    "require": "./dist/index.cjs",
-    "import": {
-      "./collection": "./src/collection.mjs",
-      "./converter": "./src/converter.mjs",
-      "./crypto": "./src/crypto.mjs",
-      "./date": "./src/date.mjs",
-      "./error": "./src/error.mjs",
-      "./math": "./src/math.mjs",
-      "./obj": "./src/obj.mjs",
-      "./string": "./src/string.mjs",
-      "./time": "./src/time.mjs",
-      "./url": "./src/url.mjs",
-      "./validate": "./src/validate.mjs",
-      "./package.json": "./package.json"
-    }
+    ".": "./dist/index.cjs",
+    "./collection": "./src/collection.mjs",
+    "./converter": "./src/converter.mjs",
+    "./crypto": "./src/crypto.mjs",
+    "./date": "./src/date.mjs",
+    "./error": "./src/error.mjs",
+    "./math": "./src/math.mjs",
+    "./obj": "./src/obj.mjs",
+    "./string": "./src/string.mjs",
+    "./time": "./src/time.mjs",
+    "./url": "./src/url.mjs",
+    "./validate": "./src/validate.mjs",
+    "./package.json": "./package.json"
   },
   "repository": {
     "type": "git",
