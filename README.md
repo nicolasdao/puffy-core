@@ -384,7 +384,7 @@ console.log(validateEmail('nic @neap.co')) // false
 # Dev
 ## About this project
 
-This project is built using ES6 modules located under the `src` folder. All the entry point definitions are located in the `package.json` under the `exports` property. Though there is a `src/index.js` file, this file is not exposed in the `exports`. Instead, this file is used to group all the modules under a single package for the CommonJS `require` API (it is compiled to the `dist/index.js`).
+This project is built using ES6 modules located under the `src` folder. All the entry point definitions are located in the `package.json` under the `exports` property.
 
 [`rollup`](https://rollupjs.org/) is used to compile the ES6 modules to CommonJS.
 
@@ -394,7 +394,7 @@ This project is built using ES6 modules located under the `src` folder. All the 
 npm run build
 ```
 
-This command compiles the ES6 modules located under the `src` folder into the `dist` folder.
+This command compiles the ES6 modules located under the `src` folder to `.cjs` file sent to the `dist` folder.
 
 ## Unit test
 
