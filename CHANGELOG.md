@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.2.3](https://github.com/nicolasdao/puffy-core/compare/v0.2.2...v0.2.3) (2021-10-14)
+
+
+### Bug Fixes
+
+* Package not working with ES6 modules ([29cead9](https://github.com/nicolasdao/puffy-core/commit/29cead9ddfccc1a07a9067614b0da106e3d71a49))
+
 ### [0.2.2](https://github.com/nicolasdao/puffy-core/compare/v0.2.1...v0.2.2) (2021-10-14)
 
 ### [0.2.1](https://github.com/nicolasdao/puffy-core/compare/v0.2.0...v0.2.1) (2021-10-14)
