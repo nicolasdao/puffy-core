@@ -2,7 +2,7 @@
 
 > WARNING: Only supported by NodeJS >= 13. To use this package with NodeJS 12, use the `--experimental-modules` flag.
 
-A collection of ES6 modules with zero-dependencies to help manage common programming tasks in both NodeJS or native JS. 
+A collection of ES6 modules with zero-dependencies to help manage common programming tasks in both NodeJS or native JS. This package supports both the `import/export` and `require` APIs via the `exports` and `main` entry points in the `package.json`.
 
 ```
 npm i puffy-core
@@ -22,13 +22,16 @@ npm i puffy-core
 >	- [`time`](#time)
 >	- [`url`](#url)
 >	- [`validate`](#validate)
->	- [Browser Only APIs](#browser-only-apis)
->		- [`browser/fetch`](#browserfetch)
-> * [Unit test](#unit-test)
+> * [Dev](#dev)
+>	- [About this project](#about-this-project)
+>	- [Building this project for both CommonJS and ES6 modules](#building-this-project-for-both-commonjs-and-es6-modules)
+>	- [Unit test](#unit-test)
 > * [License](#license)
 
 # APIs
 ## `collection`
+
+> CommonJS API: `const { collection } = require('puffy-core')`
 
 ```js
 import { batch, uniq, sortBy, seed, headTail, levelUp } from 'puffy-core/collection'
@@ -58,6 +61,8 @@ console.log(levelUp([1], [2,2], [3,3,3])) // [[1,undefined,undefined], [2,2,unde
 
 ## `converter`
 
+> CommonJS API: `const { converter } = require('puffy-core')`
+
 ```js
 import { addZero, nbrToCurrency } from 'puffy-core/converter'
 
@@ -81,6 +86,8 @@ console.log(nbrToCurrency(123, '£')) // '£123.00'
 ```
 
 ## `crypto`
+
+> CommonJS API: `const { crypto } = require('puffy-core')`
 
 ```js
 import { encoder, jwtDecode } from 'puffy-core/crypto'
@@ -120,6 +127,8 @@ const data = jwtDecode('YOUR JWT TOKEN HERE', { noFail:true }) // The 'noFail' o
 
 ## `date`
 
+> CommonJS API: `const { date } = require('puffy-core')`
+
 ```js
 import { addSeconds, addMinutes, addHours, addDays, addMonths, addYears, formatDate } from 'puffy-core/date'
 
@@ -155,6 +164,8 @@ console.log(formatDate(refDate, { format:'The dd{nth} of MMM, yyyy' })) // 'The 
 ```
 
 ## `error`
+
+> CommonJS API: `const { error } = require('puffy-core')`
 
 ```js
 import { catchErrors, wrapErrors, mergeErrors } from 'puffy-core/error'
@@ -216,6 +227,8 @@ catchErrors(main()).then(([errors, data]) => {
 
 ## `math`
 
+> CommonJS API: `const { math } = require('puffy-core')`
+
 ```js
 import { avg, stdDev, median, getRandomNumber, getRandomNumbers } from 'puffy-core/math'
 
@@ -238,6 +251,8 @@ console.log(getRandomNumbers({ start:1000, end:3000, size:5 })) // [ 1434, 2276,
 ```
 
 ## `obj`
+
+> CommonJS API: `const { obj } = require('puffy-core')`
 
 ```js
 import { merge, setProperty, getProperty, extractFlattenedJSON } from 'puffy-core/obj'
@@ -287,6 +302,8 @@ console.log(extractFlattenedJSON({
 
 ## `string`
 
+> CommonJS API: `const { string } = require('puffy-core')`
+
 ```js
 import { plural } from 'puffy-core/string'
 
@@ -299,6 +316,8 @@ console.log(plural('its', 2)) // their
 ```
 
 ## `time`
+
+> CommonJS API: `const { time } = require('puffy-core')`
 
 ```js
 import { delay, Timer } from 'puffy-core/time'
@@ -319,6 +338,8 @@ main()
 ```
 
 ## `url`
+
+> CommonJS API: `const { url } = require('puffy-core')`
 
 ```js
 import { getUrlParts } from 'puffy-core/url'
@@ -348,6 +369,8 @@ console.log(getUrlParts('https://localhost:3456/hello/world?name=carl&age=40#hom
 
 ## `validate`
 
+> CommonJS API: `const { validate } = require('puffy-core')`
+
 ```js
 import { validateUrl, validateEmail } from 'puffy-core/validate'
 
@@ -358,64 +381,22 @@ console.log(validateEmail('nic@neap.co')) // true
 console.log(validateEmail('nic @neap.co')) // false
 ```
 
-## Browser Only APIs
-### `browser/fetch`
+# Dev
+## About this project
 
-```js
-import { fetch as _fetch } from 'puffy-core/browser/fetch'
+This project is built using ES6 modules located under the `src` folder. All the entry point definitions are located in the `package.json` under the `exports` property. Though there is a `src/index.js` file, this file is not exposed in the `exports`. Instead, this file is used to group all the modules under a single package for the CommonJS `require` API (it is compiled to the `dist/index.js`).
 
-const main = async () => {
-	// fetch
-	const { status, data } = await _fetch.get({
-		uri: 'http://localhost:4220/entry/32',
-		headers: {
-			'Content-Type': 'multipart/form-data'
-		},
-		body: {
-			hello: 'World',
-			myFile: document.querySelector('input[type="file"]').files[0]
-		}
-	})
+[`rollup`](https://rollupjs.org/) is used to compile the ES6 modules to CommonJS.
 
-	// POST URL encoded data
-	const { status:status2, data:data2 } = await _fetch.post({
-		uri: 'http://localhost:4220/entry/32',
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		},
-		body: {
-			hello: 'World'
-		}
-	})
+## Building this project for both CommonJS and ES6 modules
 
-	// GraphQL
-	const { status:status3, data:data3 } = await _fetch.graphql.query({ 
-		uri: 'http://localhost:4220/graphql', 
-		headers:{}, 
-		query: `{ 
-			users(where:{ id:1 }){ 
-				id 
-				name 
-			} 
-		}` 
-	})
-
-	const { status:status4, data:data4 } = await _fetch.graphql.mutate({ 
-		uri: 'http://localhost:4220/graphql', 
-		headers:{}, 
-		query: `{ 
-			userInsert(input:{ name:"Nic" }){ 
-				id 
-				name 
-			} 
-		}` 
-	})
-}
-
-main()
+```
+npm run build
 ```
 
-# Unit test
+This command compiles the ES6 modules located under the `src` folder into the `dist` folder.
+
+## Unit test
 
 ```
 npm test

@@ -2,8 +2,8 @@
   "name": "puffy-core",
   "version": "0.1.1",
   "description": "A collection of ES6 modules with zero-dependencies to help manage common programming tasks in both NodeJS or native JS.",
+  "main": "./dist/index.js",
   "exports": {
-    "./browser/fetch": "./src/browser/fetch.js",
     "./collection": "./src/collection.js",
     "./converter": "./src/converter.js",
     "./crypto": "./src/crypto.js",
@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/nicolasdao/puffy-core#readme",
   "scripts": {
+    "build": "rollup -c",
     "dev": "TZ=UTC NODE_ENV=dev node index.js",
     "lint": "eslint src/ test/ --fix",
     "push": "git push --follow-tags origin master && npm publish",
@@ -41,6 +42,8 @@
     "chai": "^4.3.4",
     "eslint": "^7.32.0",
     "mocha": "^9.1.2",
+    "rollup": "^2.58.0",
+    "rollup-plugin-multi-input": "^1.3.1",
     "standard-version": "^9.3.1"
   }
 }
