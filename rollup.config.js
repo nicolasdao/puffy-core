@@ -1,10 +1,12 @@
-import multiInput from 'rollup-plugin-multi-input';
+import multiInput from 'rollup-plugin-multi-input'
 	
 export default {
-	input: ['src/**/*.js'],
+	input: ['src/**/*.mjs'],
 	output: {
 		dir: 'dist',
-		format: 'cjs'
+		format: 'cjs',
+		chunkFileNames: '[name]-[hash].cjs',
+		entryFileNames: '[name].cjs'
 	},
-	plugins: [ multiInput() ]
+	plugins:[multiInput()]
 }

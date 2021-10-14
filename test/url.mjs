@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 
 import { assert } from 'chai'
-import { getUrlParts } from '../src/url.js'
+import { getUrlParts } from '../src/url.mjs'
 
 describe('url', () => {
 	describe('.getUrlParts', () => {

@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 	
 import { assert } from 'chai'
-import { addSeconds, addMinutes, addHours, addDays, addMonths, addYears, formatDate } from '../src/date.js'
+import { addSeconds, addMinutes, addHours, addDays, addMonths, addYears, formatDate } from '../src/date.mjs'
 
 describe('date', () => {
 	describe('.addSeconds', () => {

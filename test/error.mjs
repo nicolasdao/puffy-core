@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 					
 import { assert } from 'chai'
-import { catchErrors, wrapErrors, mergeErrors } from '../src/error.js'
+import { catchErrors, wrapErrors, mergeErrors } from '../src/error.mjs'
 											
 describe('error', () => {
 	describe('.catchErrors', () => {

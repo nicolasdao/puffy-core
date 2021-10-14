@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 
 import { assert } from 'chai'
-import { batch, uniq, headTail, sortBy, seed, levelUp } from '../src/collection.js'
+import { batch, uniq, headTail, sortBy, seed, levelUp } from '../src/collection.mjs'
 
 describe('collection', () => {
 	describe('.batch', () => {

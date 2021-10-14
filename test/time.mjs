@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 
 import { assert } from 'chai'
-import { delay, Timer } from '../src/time.js'
+import { delay, Timer } from '../src/time.mjs'
 
 describe('time', () => {
 	describe('.delay', () => {

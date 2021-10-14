@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 
 import { assert } from 'chai'
-import { plural } from '../src/string.js'
+import { plural } from '../src/string.mjs'
 
 describe('string', () => {
 	describe('.plural', () => {

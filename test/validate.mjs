@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 		
 import { assert } from 'chai'
-import { validateSpecialChar, validateUrl, validateEmail } from '../src/validate.js'
+import { validateSpecialChar, validateUrl, validateEmail } from '../src/validate.mjs'
 		
 describe('validate', () => {
 	describe('.validateSpecialChar', () => {

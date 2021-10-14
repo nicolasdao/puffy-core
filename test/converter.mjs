@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 	
 import { assert } from 'chai'
-import { addZero, nbrToCurrency, s2cCase, objectS2Ccase, objectCapital2Ccase } from '../src/converter.js'
+import { addZero, nbrToCurrency, s2cCase, objectS2Ccase, objectCapital2Ccase } from '../src/converter.mjs'
 
 describe('converter', () => {
 	describe('.addZero', () => {

@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 
 import { assert } from 'chai'
-import { merge, diff, mirror, setProperty, getProperty, extractFlattenedJSON } from '../src/obj.js'
+import { merge, diff, mirror, setProperty, getProperty, extractFlattenedJSON } from '../src/obj.mjs'
 
 describe('obj', () => {
 	describe('.merge', () => {

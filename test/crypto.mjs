@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 
 import { assert } from 'chai'
-import { encoder, jwtDecode } from '../src/crypto.js'
+import { encoder, jwtDecode } from '../src/crypto.mjs'
 
 describe('crypto', () => {
 	describe('.encoder', () => {

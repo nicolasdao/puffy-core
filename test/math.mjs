@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 
 import { assert } from 'chai'
-import { avg, stdDev, median } from '../src/math.js'
+import { avg, stdDev, median } from '../src/math.mjs'
 
 describe('math', () => {
 	describe('.avg', () => {
