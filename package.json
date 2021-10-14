@@ -4,20 +4,22 @@
   "description": "A collection of ES6 modules with zero-dependencies to help manage common programming tasks in both NodeJS or native JS.",
   "main": "./dist/index.js",
   "exports": {
-    "./collection": "./src/collection.js",
-    "./converter": "./src/converter.js",
-    "./crypto": "./src/crypto.js",
-    "./date": "./src/date.js",
-    "./error": "./src/error.js",
-    "./math": "./src/math.js",
-    "./obj": "./src/obj.js",
-    "./string": "./src/string.js",
-    "./time": "./src/time.js",
-    "./url": "./src/url.js",
-    "./validate": "./src/validate.js",
-    "./package.json": "./package.json"
+    "require": "./dist/index.js",
+    "import": {
+      "./collection": "./src/collection.js",
+      "./converter": "./src/converter.js",
+      "./crypto": "./src/crypto.js",
+      "./date": "./src/date.js",
+      "./error": "./src/error.js",
+      "./math": "./src/math.js",
+      "./obj": "./src/obj.js",
+      "./string": "./src/string.js",
+      "./time": "./src/time.js",
+      "./url": "./src/url.js",
+      "./validate": "./src/validate.js",
+      "./package.json": "./package.json"
+    }
   },
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "https://github.com/nicolasdao/puffy-core.git"
