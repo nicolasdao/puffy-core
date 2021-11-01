@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/nicolasdao/puffy-core/compare/v0.2.6...v0.3.0) (2021-11-01)
+
+
+### Features
+
+* Add support for multiple words pluralization ([59caa44](https://github.com/nicolasdao/puffy-core/commit/59caa4422abd5bd412b3865e31ddcb4fadaea562))
+
 ### [0.2.6](https://github.com/nicolasdao/puffy-core/compare/v0.2.5...v0.2.6) (2021-10-14)
 
 ### [0.2.5](https://github.com/nicolasdao/puffy-core/compare/v0.2.3...v0.2.5) (2021-10-14)
