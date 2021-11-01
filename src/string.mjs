@@ -12,29 +12,48 @@ API:
 */
 
 const SPECIAL_PLURAL = { 
+	'am':'are',
+	'Am':'Are',
+	'he is':'they are',
+	'He is':'They are',
+	'he':'they', 
+	'He':'They', 
+	'he/she':'they', 
+	'He/She':'They', 
+	'i':'they',
+	'I':'They',
 	'is':'are', 
 	'Is':'Are', 
 	'its':'their', 
 	'Its':'Their', 
-	'he/she':'they', 
-	'he':'they', 
-	'she':'they',
-	'He/She':'They', 
-	'He':'They', 
-	'She':'They',
-	'he is':'they are',
-	'He is':'They are',
 	'she is':'they are',
-	'She is':'They are'
+	'She is':'They are',
+	'she':'they',
+	'She':'They',
+	'was':'were',
+	'Was':'Were',
+	'you':'they',
+	'You':'They',
 }
-export const plural = (word, count) => {
-	if (!word)
+export const plural = (...args) => {
+	if (!args.length)
 		return ''
 
-	if (/y$/.test(word))
-		return count && count > 1 ? word.replace(/y$/, 'ies') : word 
-	else if (SPECIAL_PLURAL[word])
-		return count && count > 1 ? SPECIAL_PLURAL[word] : word
-	else
-		return count && count > 1 ? `${word}s` : word
+	const [count, ...words] = args
+	const pluralOn = count && count > 1
+
+	return words.map(word => {
+		word = word || ''
+		if (/y$/.test(word))
+			return pluralOn ? word.replace(/y$/, 'ies') : word 
+		else if (SPECIAL_PLURAL[word])
+			return pluralOn ? SPECIAL_PLURAL[word] : word
+		else
+			return pluralOn ? `${word}s` : word
+	}).join(' ')
 }
+
+
+
+
+

@@ -308,12 +308,18 @@ console.log(extractFlattenedJSON({
 import { plural } from 'puffy-core/string'
 
 // plural
-console.log(plural('cat', 1)) // cat
-console.log(plural('cat', 2)) // cats
-console.log(plural('He', 2)) // They
-console.log(plural('She is', 2)) // They are
-console.log(plural('its', 2)) // their
+console.log(plural(1, 'cat')) // cat
+console.log(plural(2, 'cat')) // cats
+console.log(plural(2, 'He')) // They
+console.log(plural(2, 'its')) // their
+
+// Also support multiple words:
+console.log(plural(1, 'Project', 'was')) // Project was
+console.log(plural(2, 'Project', 'was')) // Projects were
+console.log(plural(1, 'She', 'is')) // She is
+console.log(plural(2, 'She', 'is')) // They are
 ```
+
 
 ## `time`
 
