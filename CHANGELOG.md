@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.1](https://github.com/nicolasdao/puffy-core/compare/v0.3.0...v0.3.1) (2021-11-04)
+
+
+### Features
+
+* Add support for arbitraty amounts or inputs for the wrapErrors method ([a5aa386](https://github.com/nicolasdao/puffy-core/commit/a5aa386a49d8533ce79e93caa6e084ae3a111cf8))
+
 ## [0.3.0](https://github.com/nicolasdao/puffy-core/compare/v0.2.6...v0.3.0) (2021-11-01)
 
 
