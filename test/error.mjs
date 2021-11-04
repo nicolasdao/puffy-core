@@ -90,6 +90,118 @@ describe('error', () => {
 			assert.equal(errors02[0].message, 'robustSyncFn failed', '06')
 			assert.equal(errors02[1].message, 'Should fail', '07')
 		})
+		it('02 - Should support an arbitrary amount of inputs, including both strings and Errors', () => {
+
+			const robustSyncFn01 = (fail) => catchErrors(() => {
+				if (fail)
+					throw new Error('Should fail')
+				else
+					return 123
+			})
+
+			const robustSyncFn = (fail) => catchErrors(() => {
+				const errorMsg = 'robustSyncFn failed'
+				const [errors, result] = robustSyncFn01(fail)
+				if (errors)
+					throw wrapErrors(errorMsg, 'this is another error', errors, new Error('I\'m an error too'), [new Error('We are errors')])
+				else
+					return result
+			})
+
+			const [errors01, result01] = robustSyncFn()
+
+			assert.isNotOk(errors01, '01')
+			assert.equal(result01, 123 ,'02')
+
+			const [errors02, result02] = robustSyncFn(true)
+
+			assert.isOk(errors02)
+			assert.isNotOk(result02)
+			assert.equal(errors02.length, 5)
+			assert.equal(errors02[0].message, 'robustSyncFn failed')
+			assert.equal(errors02[1].message, 'this is another error')
+			assert.equal(errors02[2].message, 'Should fail')
+			assert.equal(errors02[3].message, 'I\'m an error too')
+			assert.equal(errors02[4].message, 'We are errors')
+		})
+		it('03 - Should support single string input', () => {
+
+			const robustSyncFn01 = (fail) => catchErrors(() => {
+				if (fail)
+					throw new Error('Should fail')
+				else
+					return 123
+			})
+
+			const robustSyncFn = (fail) => catchErrors(() => {
+				const errorMsg = 'robustSyncFn failed'
+				robustSyncFn01(fail)
+				throw wrapErrors(errorMsg)
+			})
+
+			const [errors02, result02] = robustSyncFn(true)
+
+			assert.isOk(errors02)
+			assert.isNotOk(result02)
+			assert.equal(errors02.length, 1)
+			assert.equal(errors02[0].message, 'robustSyncFn failed')
+		})
+		it('04 - Should support single Error input', () => {
+
+			const robustSyncFn01 = (fail) => catchErrors(() => {
+				if (fail)
+					throw new Error('Should fail')
+				else
+					return 123
+			})
+
+			const robustSyncFn = (fail) => catchErrors(() => {
+				const errorMsg = 'robustSyncFn failed'
+				robustSyncFn01(fail)
+				throw wrapErrors(new Error(errorMsg))
+			})
+
+			const [errors02, result02] = robustSyncFn(true)
+
+			assert.isOk(errors02)
+			assert.isNotOk(result02)
+			assert.equal(errors02.length, 1)
+			assert.equal(errors02[0].message, 'robustSyncFn failed')
+		})
+		it('05 - Should support merging all the errors\' stacks into a single stack error', () => {
+
+			const robustSyncFn01 = (fail) => catchErrors(() => {
+				if (fail)
+					throw new Error('Should fail')
+				else
+					return 123
+			})
+
+			const robustSyncFn = (fail) => catchErrors(() => {
+				const errorMsg = 'robustSyncFn failed'
+				const [errors, result] = robustSyncFn01(fail)
+				if (errors)
+					throw wrapErrors(errorMsg, 'this is another error', errors, new Error('I\'m an error too'), [new Error('We are errors')], { merge:true })
+				else
+					return result
+			})
+
+			const [errors01, result01] = robustSyncFn()
+
+			assert.isNotOk(errors01, '01')
+			assert.equal(result01, 123 ,'02')
+
+			const [errors02, result02] = robustSyncFn(true)
+
+			assert.isOk(errors02)
+			assert.isNotOk(result02)
+			assert.equal(errors02.length, 1)
+			assert.isOk(errors02[0].stack.indexOf('robustSyncFn failed') >= 0)
+			assert.isOk(errors02[0].stack.indexOf('this is another error') >= 0)
+			assert.isOk(errors02[0].stack.indexOf('Should fail') >= 0)
+			assert.isOk(errors02[0].stack.indexOf('I\'m an error too') >= 0)
+			assert.isOk(errors02[0].stack.indexOf('We are errors') >= 0)
+		})
 	})
 	describe('.mergeErrors', () => {
 		it('01 - Should merge all the stacked errors in a single error', () => {

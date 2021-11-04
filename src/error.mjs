@@ -69,20 +69,43 @@ export const catchErrors = exec => {
  * 
  * @param  {String}		msg				Error message.
  * @param  {Array}		errors			Previous errors.
- * @param  {Boolean}	options.merge	Default false. If true, all the errors details are merge into a the body of the new error.
+ * @param  {Boolean}	options.merge	Default false. If true, all the errors' stacks are merge into the body of the new error.
  * 
  * @return {Error}		error
  */
-export const wrapErrors = (msg, errors, options) => {
-	errors = errors || []
-	if (options && options.merge) {
-		const erroMsg = [{ stack:msg }, ...errors].map(e => e.stack).join('\n')
-		return new Error(erroMsg)
-	} else {
-		const error = new Error(msg)
-		error.errors = errors
-		return error
+export const wrapErrors = (...args) => {
+	if (!args.length)
+		return new Error('Unknown error')
+
+	const [head, ...rest] = args
+	const [headError, ...errors] = _parseToErrors(head)
+	let merge = false
+	for (let i=0;i<rest.length;i++) {
+		const error = rest[i]
+		if (error) {
+			if (error.merge && !error.message && !error.stack)
+				merge = true
+			else
+				errors.push(..._parseToErrors(error))
+		}
 	}
+
+	if (merge) 
+		return new Error([headError,...errors].map(e => e.stack).join('\n'))
+	else {
+		headError.errors = errors
+		return headError
+	}
+
+	// errors = errors || []
+	// if (options && options.merge) {
+	// 	const erroMsg = [{ stack:msg }, ...errors].map(e => e.stack).join('\n')
+	// 	return new Error(erroMsg)
+	// } else {
+	// 	const error = new Error(msg)
+	// 	error.errors = errors
+	// 	return error
+	// }
 }
 
 export const mergeErrors = (errors=[]) => {
@@ -95,6 +118,27 @@ export const mergeErrors = (errors=[]) => {
 	return error
 }
 
+const _parseToErrors = e => {
+	if (!e)
+		return [new Error('Unknown error')]
+
+	if (Array.isArray(e))
+		return e.reduce((acc,err) => {
+			acc.push(..._parseToErrors(err))
+			return acc
+		}, [])
+	else if (typeof(e) == 'string')
+		return [new Error(e)]
+	else if (e instanceof Error)
+		return [e]
+	else if (e.message) {
+		if (e.stack)
+			return [e]
+		else
+			return [new Error(e.message)]
+	} else
+		return [new Error('Unknown error')]
+}
 
 const _formatErrors = err => {
 	if (err && err.errors && err.errors[0]) {

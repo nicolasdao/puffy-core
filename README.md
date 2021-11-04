@@ -225,6 +225,11 @@ catchErrors(main()).then(([errors, data]) => {
 })
 ```
 
+> NOTE: __`wrapErrors`__ supports an arbitrary amount of inputs with both string and Error types:
+> ```js
+> wrapErrors('I am an error', new Error('I am another error'), [new Error('We are other errors')])
+> ```
+
 ## `math`
 
 > CommonJS API: `const { math } = require('puffy-core')`
