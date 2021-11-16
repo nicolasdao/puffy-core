@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.2](https://github.com/nicolasdao/puffy-core/compare/v0.3.1...v0.3.2) (2021-11-16)
+
+
+### Bug Fixes
+
+* mergeErrors breaks with NULL input ([7160a62](https://github.com/nicolasdao/puffy-core/commit/7160a626e4f1e8e8f3772d67f51942a8f3369963))
+
 ### [0.3.1](https://github.com/nicolasdao/puffy-core/compare/v0.3.0...v0.3.1) (2021-11-04)
 
 
