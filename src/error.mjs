@@ -96,19 +96,10 @@ export const wrapErrors = (...args) => {
 		headError.errors = errors
 		return headError
 	}
-
-	// errors = errors || []
-	// if (options && options.merge) {
-	// 	const erroMsg = [{ stack:msg }, ...errors].map(e => e.stack).join('\n')
-	// 	return new Error(erroMsg)
-	// } else {
-	// 	const error = new Error(msg)
-	// 	error.errors = errors
-	// 	return error
-	// }
 }
 
-export const mergeErrors = (errors=[]) => {
+export const mergeErrors = errors => {
+	errors = errors || []
 	if (!errors.length)
 		return new Error()
 
