@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.3](https://github.com/nicolasdao/puffy-core/compare/v0.3.2...v0.3.3) (2021-11-17)
+
+
+### Features
+
+* Add support for string.justifyLeft function ([8355806](https://github.com/nicolasdao/puffy-core/commit/835580606acab7e47fab1ed85ef5a0c586fedeb3))
+
 ### [0.3.2](https://github.com/nicolasdao/puffy-core/compare/v0.3.1...v0.3.2) (2021-11-16)
 
 
