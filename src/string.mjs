@@ -53,6 +53,25 @@ export const plural = (...args) => {
 	}).join(' ')
 }
 
+/**
+ * Justifies text to the left.
+ * 
+ * @param  {String}		text
+ * @param  {Object}		options
+ * @param  {String} 		.start				Default ''.
+ * @param  {Boolean} 		.firstLineAnchor	Default false. Overrides 'options.start'.
+ * 
+ * @return {String}		justifiedText
+ */
+export const justifyLeft = (text, options) => {
+	if (!text)
+		return ''
+
+	const { start, firstLineAnchor } = options || {}
+	const startChar = firstLineAnchor ? (text.match(/^\s*/)||[])[0]||'' : start||''
+
+	return text.replace(/^\s*/,startChar).replace(/\n\s*/g,`\n${startChar}`)
+}
 
 
 

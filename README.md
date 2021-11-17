@@ -310,21 +310,48 @@ console.log(extractFlattenedJSON({
 > CommonJS API: `const { string } = require('puffy-core')`
 
 ```js
-import { plural } from 'puffy-core/string'
+import { plural, justifyLeft } from 'puffy-core/string'
 
 // plural
 console.log(plural(1, 'cat')) // cat
 console.log(plural(2, 'cat')) // cats
 console.log(plural(2, 'He')) // They
 console.log(plural(2, 'its')) // their
+console.log(plural(1, 'Test record')) // Test record
+console.log(plural(2, 'Test record')) // Test records
 
 // Also support multiple words:
 console.log(plural(1, 'Project', 'was')) // Project was
 console.log(plural(2, 'Project', 'was')) // Projects were
 console.log(plural(1, 'She', 'is')) // She is
 console.log(plural(2, 'She', 'is')) // They are
-```
+console.log(plural(1, 'Test record', 'is')) // Test record is
+console.log(plural(2, 'Test record', 'is')) // Test records are
 
+// justifyLeft
+const text = `    Hello,
+	This is some
+	  misaligned text.`
+
+console.log(justifyLeft(text))
+/*
+Hello,
+This is some
+misaligned text.
+ */
+console.log(justifyLeft(text, { start:'> ' }))
+/*
+> Hello,
+> This is some
+> misaligned text.
+ */
+console.log(justifyLeft(text, { firstLineAnchor:true })) // Overrides 'options.start'.
+/*
+    Hello,
+    This is some
+    misaligned text.
+ */
+```
 
 ## `time`
 
