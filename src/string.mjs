@@ -56,10 +56,12 @@ export const plural = (...args) => {
 /**
  * Justifies text to the left.
  * 
- * @param  {String}		text
- * @param  {Object}		options
- * @param  {String} 		.start				Default ''.
- * @param  {Boolean} 		.firstLineAnchor	Default false. Overrides 'options.start'.
+ * @param  {String}			text
+ * @param  {Object}			options
+ * @param  {String} 			.prefix			Default ''.
+ * @param  {Boolean} 			.anchorLine		Default false. Overrides 'options.start'.
+ * @param  {String|Boolean} 	.remove				
+ * @param  {Number|[Number]} 	.skip			
  * 
  * @return {String}		justifiedText
  */
@@ -67,10 +69,30 @@ export const justifyLeft = (text, options) => {
 	if (!text)
 		return ''
 
-	const { start, firstLineAnchor } = options || {}
-	const startChar = firstLineAnchor ? (text.match(/^\s*/)||[])[0]||'' : start||''
+	const bits = text.split('\n')
 
-	return text.replace(/^\s*/,startChar).replace(/\n\s*/g,`\n${startChar}`)
+	const { prefix, anchorLine, remove, skip } = options || {}
+	const defaultChar = anchorLine >= 0 
+		? ((bits[anchorLine]||'').match(/^\s*/)||[])[0]||''
+		: ''
+	const _prefix = `${prefix||''}${defaultChar}`
+
+	let replaceFn = line => line.replace(/^\s*/, _prefix)
+
+	if (remove) {
+		const rm = typeof(remove) == 'boolean' ? defaultChar : remove
+		replaceFn = line => line.indexOf(rm) === 0 ? line.replace(rm,prefix||'') : line
+	}
+
+	const _skip = (typeof(skip*1) == 'number' ? [skip] : Array.isArray(skip) ? skip : []).filter(x => !isNaN(x*1) && (x*1) >= 0).map(x => x*1)
+	if (_skip.length)
+		return bits.reduce((acc,bit,idx) => {
+			if (_skip.indexOf(idx) < 0)
+				acc.push(replaceFn(bit))
+			return acc
+		}, []).join('\n')
+	else
+		return bits.map(replaceFn).join('\n')
 }
 
 

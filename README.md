@@ -329,27 +329,71 @@ console.log(plural(1, 'Test record', 'is')) // Test record is
 console.log(plural(2, 'Test record', 'is')) // Test records are
 
 // justifyLeft
-const text = `    Hello,
-	This is some
-	  misaligned text.`
+const text = `		Hello,
+	This is a list:
+	- Fruits:
+		- Apple
+		- Orange`
 
 console.log(justifyLeft(text))
 /*
 Hello,
-This is some
-misaligned text.
+This is a list:
+- Fruits:
+- Apple
+- Orange
  */
-console.log(justifyLeft(text, { start:'> ' }))
+
+console.log(justifyLeft(text, { prefix:'> ' }))
 /*
 > Hello,
-> This is some
-> misaligned text.
+> This is a list:
+> - Fruits:
+> - Apple
+> - Orange
  */
-console.log(justifyLeft(text, { firstLineAnchor:true })) // Overrides 'options.start'.
+
+// The 'anchorLine' is the line used as reference by all the other line. 
+console.log(justifyLeft(text, { anchorLine:0 })) 
 /*
-    Hello,
-    This is some
-    misaligned text.
+		Hello,
+		This is a list:
+		- Fruits:
+		- Apple
+		- Orange
+ */
+
+console.log(justifyLeft(text, { remove:'	' })) 
+/*
+	Hello,
+This is a list:
+- Fruits:
+	- Apple
+	- Orange
+ */
+
+console.log(justifyLeft(text, { remove:true, anchorLine:1 })) 
+/*
+	Hello,
+This is a list:
+- Fruits:
+	- Apple
+	- Orange
+ */
+
+console.log(justifyLeft(text, { remove:true, anchorLine:1, skip:0 })) 
+/*
+This is a list:
+- Fruits:
+	- Apple
+	- Orange
+ */
+
+console.log(justifyLeft(text, { remove:true, anchorLine:1, skip:[0,1] })) 
+/*
+- Fruits:
+	- Apple
+	- Orange
  */
 ```
 

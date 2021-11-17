@@ -55,17 +55,74 @@ describe('string', () => {
 				messed up.`
 			const expected = '> Hello,\n> This is a test\n> with multiple lines\n> messed up.'
 
-			assert.equal(justifyLeft(text, { start:'> ' }), expected)
+			assert.equal(justifyLeft(text, { prefix:'> ' }), expected)
 		})
-
-		it('02 - Should justify all the lines to the left (no more spaces) and start with same indent as the first line.', () => {
+		it('03 - Should justify all the lines to the left (no more spaces) and start with same indent as the first line.', () => {
 			const text = `    Hello,
 				This is a test
 				with multiple lines
 				messed up.`
 			const expected = '    Hello,\n    This is a test\n    with multiple lines\n    messed up.'
 
-			assert.equal(justifyLeft(text, { firstLineAnchor:true }), expected)
+			assert.equal(justifyLeft(text, { anchorLine:0 }), expected)
+		})
+		it('04 - Should justify all the lines to the left (no more spaces) and start with same indent as the 3rd line.', () => {
+			const text = `    Hello,
+				This is a test
+					with multiple lines
+				messed up.`
+			const expected = '					Hello,\n					This is a test\n					with multiple lines\n					messed up.'
+
+			assert.equal(justifyLeft(text, { anchorLine:2 }), expected)
+		})
+		it('05 - Should remove a specific amount of space on each line.', () => {
+			const text = `
+				Hello,
+				The items list is:
+					- Fruits:
+						- Apple
+						- Orange
+					- Bred`
+			const expected = '\nHello,\nThe items list is:\n	- Fruits:\n		- Apple\n		- Orange\n	- Bred'
+
+			assert.equal(justifyLeft(text, { remove:'				' }), expected)
+		})
+		it('06 - Should remove the same amount of space than the anchor line on each line.', () => {
+			const text = `
+				Hello,
+				The items list is:
+					- Fruits:
+						- Apple
+						- Orange
+					- Bred`
+			const expected = '\nHello,\nThe items list is:\n	- Fruits:\n		- Apple\n		- Orange\n	- Bred'
+
+			assert.equal(justifyLeft(text, { remove:true, anchorLine:1 }), expected)
+		})
+		it('07 - Should skip lines.', () => {
+			const text = `
+				Hello,
+				The items list is:
+					- Fruits:
+						- Apple
+						- Orange
+					- Bred`
+			const expected = 'Hello,\nThe items list is:\n	- Fruits:\n		- Apple\n		- Orange\n	- Bred'
+
+			assert.equal(justifyLeft(text, { remove:true, anchorLine:1, skip:0 }), expected)
+			assert.equal(justifyLeft(text, { remove:true, anchorLine:1, skip:[0] }), expected)
+		})
+		it('08 - Should combine all options.', () => {
+			const text = `
+				Hello,
+				The items list is:
+					- Fruits:
+						- Apple
+						- Orange
+					- Bred`
+			const expected = '> Hello,\n> The items list is:\n> 	- Fruits:\n> 		- Apple\n> 		- Orange\n> 	- Bred'
+
+			assert.equal(justifyLeft(text, { remove:true, anchorLine:1, skip:0, prefix:'> ' }), expected)
 		})
 	})
 })
