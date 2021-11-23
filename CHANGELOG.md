@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.2](https://github.com/nicolasdao/puffy-core/compare/v0.4.1...v0.4.2) (2021-11-23)
+
+
+### Bug Fixes
+
+* string.plural does not support 'him' ([6a169b6](https://github.com/nicolasdao/puffy-core/commit/6a169b6a5d15384581994a651af5677ed96835b4))
+* string.plural does not support 'that', 'her' and 'his' ([d37cf26](https://github.com/nicolasdao/puffy-core/commit/d37cf26c74bfe7dae210b19f040d54bd68736fbb))
+* string.plural does not support 'this' ([36e3ebd](https://github.com/nicolasdao/puffy-core/commit/36e3ebd88bca46e0aff5780f11f61e0e00b2a38c))
+
 ### [0.4.1](https://github.com/nicolasdao/puffy-core/compare/v0.4.0...v0.4.1) (2021-11-23)
 
 
