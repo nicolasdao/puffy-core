@@ -34,6 +34,12 @@ const SPECIAL_PLURAL = {
 	'Was':'Were',
 	'you':'they',
 	'You':'They',
+	'that':'those',
+	'That':'Those',
+	'his':'their',
+	'His':'Their',
+	'her':'their',
+	'Her':'Their'
 }
 export const plural = (...args) => {
 	if (!args.length)
