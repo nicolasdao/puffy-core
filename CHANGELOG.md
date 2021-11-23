@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.4.1](https://github.com/nicolasdao/puffy-core/compare/v0.4.0...v0.4.1) (2021-11-23)
+
+
+### Features
+
+* Add support for collection.flatten and collection.flattenUniq ([ffb34be](https://github.com/nicolasdao/puffy-core/commit/ffb34be1675f3f03149ddb16fdec33d96138cdf9))
+
 ## [0.4.0](https://github.com/nicolasdao/puffy-core/compare/v0.3.3...v0.4.0) (2021-11-17)
 
 
