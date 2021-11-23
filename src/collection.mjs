@@ -9,11 +9,14 @@
 /*
 API:
 	- batch
-	- uniq
+	- flatten
+	- flattenUniq
 	- headTail
-	- sortBy
-	- seed
+	- levelUp
 	- merge
+	- seed
+	- sortBy
+	- uniq
 */
 
 /**
@@ -78,7 +81,9 @@ export const sortBy = (obj, ...args) => {
 
 	return Array.isArray(obj) ? _arraySortBy(obj, fn, dir == 'desc' ? 'desc' : 'asc') : _objectSortBy(obj, fn, dir == 'desc' ? 'desc' : 'asc')
 }
+
 export const seed = (size=0) => Array.apply(null, Array(size))
+
 export const levelUp = (...collections) => {
 	if (collections.length == 0)
 		return []
@@ -102,6 +107,22 @@ export const levelUp = (...collections) => {
 	})
 }
 
+const _flatten = options => (...args) => {
+	const { noduplicate } = options||{}
+	const results = []
+	for (let i=0;i<args.length;i++) {
+		const obj = args[i]
+		if (Array.isArray(obj))
+			results.push(...flatten(...obj))
+		else
+			results.push(obj)
+	}
+
+	return noduplicate ? Array.from(new Set(results)) : results
+}
+
+export const flatten = _flatten()
+export const flattenUniq = _flatten({ noduplicate:true })
 
 const _objectSortBy = (obj, fn = x => x, dir='asc') => Object.keys(obj || {})
 	.map(key => ({ key, value: obj[key] }))
@@ -147,3 +168,5 @@ const _arraySortBy = (arr, fn = x => x, dir='asc') => (arr || []).sort((a,b) => 
 			return 0
 	}
 })
+
+

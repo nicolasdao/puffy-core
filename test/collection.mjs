@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 
 import { assert } from 'chai'
-import { batch, uniq, headTail, sortBy, seed, levelUp } from '../src/collection.mjs'
+import { batch, uniq, headTail, sortBy, seed, levelUp, flatten, flattenUniq } from '../src/collection.mjs'
 
 describe('collection', () => {
 	describe('.batch', () => {
@@ -119,13 +119,27 @@ describe('collection', () => {
 		})
 	})
 	describe('.levelUp', () => {
-		it('01 - Should level up a collection of arrays so they all have the same size.', () => {
+		it('01 - Should level up a collection of arrays so they all have the same size (tail with undefined to make match size).', () => {
 			const data = levelUp([1,2,3,4,5],[7,7,7,7,7,7,7,7,7,7,7,7])
 			assert.equal(data.length, 2)
 			assert.equal(data[0].length, 12)
 			assert.equal(data[0].filter(a=>a).join(''), '12345')
 			assert.equal(data[1].length, 12)
 			assert.equal(data[1].filter(a=>a).join(''), '777777777777')
+		})
+	})
+	describe('.flatten', () => {
+		it('01 - Should merge and flatten collection or arrays and nested arrays.', () => {
+			const data = flatten(1,[1,2,3],[4,5,[6,7]],8,9)
+			assert.equal(data.length, 10)
+			assert.equal(data.join(''), '1123456789')
+		})
+	})
+	describe('.flattenUniq', () => {
+		it('01 - Should merge and flatten collection or arrays and nested arrays and remove duplicated items.', () => {
+			const data = flattenUniq(1,[1,2,3],[4,5,[6,7]],8,6)
+			assert.equal(data.length, 8)
+			assert.equal(data.join(''), '12345678')
 		})
 	})
 })

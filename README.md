@@ -34,7 +34,7 @@ npm i puffy-core
 > CommonJS API: `const { collection } = require('puffy-core')`
 
 ```js
-import { batch, uniq, sortBy, seed, headTail, levelUp } from 'puffy-core/collection'
+import { batch, uniq, sortBy, seed, headTail, levelUp, flatten, flattenUniq } from 'puffy-core/collection'
 
 // batch
 console.log(batch([1,2,3,4,5,6,7,8,9,10], 3)) // [[1,2,3], [4,5,6], [7,8,9], [10]]
@@ -57,6 +57,12 @@ console.log(headTail([1,2,3,4,5,6,7,8], 3)) // [[1,2,3], [4,5,6,7,8]]
 
 // levelUp
 console.log(levelUp([1], [2,2], [3,3,3])) // [[1,undefined,undefined], [2,2,undefined], [3,3,3]]
+
+// flatten
+console.log(flatten(1,[1,2,3],[4,5,[6,7]],8,9,[6])) // [1,1,2,3,4,5,6,7,8,9,6]
+
+// flattenUniq
+console.log(flattenUniq(1,[1,2,3],[4,5,[6,7]],8,9,[6])) // [1,2,3,4,5,6,7,8,9]
 ```
 
 ## `converter`
