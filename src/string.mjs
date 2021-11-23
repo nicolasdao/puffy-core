@@ -41,7 +41,9 @@ const SPECIAL_PLURAL = {
 	'his':'their',
 	'His':'Their',
 	'her':'their',
-	'Her':'Their'
+	'Her':'Their',
+	'him':'them',
+	'Him':'Them'
 }
 export const plural = (...args) => {
 	if (!args.length)
