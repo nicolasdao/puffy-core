@@ -28,6 +28,8 @@ describe('string', () => {
 			assert.equal(plural(2, 'this'), 'these')
 			assert.equal(plural(1, 'his'), 'his')
 			assert.equal(plural(2, 'his'), 'their')
+			assert.equal(plural(1, 'him'), 'him')
+			assert.equal(plural(2, 'him'), 'them')
 			assert.equal(plural(1, 'her'), 'her')
 			assert.equal(plural(2, 'her'), 'their')
 			assert.equal(plural(2, 'its'), 'their')

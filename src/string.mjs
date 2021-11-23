@@ -36,6 +36,8 @@ const SPECIAL_PLURAL = {
 	'You':'They',
 	'that':'those',
 	'That':'Those',
+	'this':'these',
+	'This':'These',
 	'his':'their',
 	'His':'Their',
 	'her':'their',
