@@ -28,11 +28,11 @@
   "homepage": "https://github.com/nicolasdao/puffy-core#readme",
   "scripts": {
     "build": "rollup -c",
-    "dev": "TZ=UTC NODE_ENV=dev node index.js",
+    "dev": "TZ=UTC NODE_ENV=dev node index.mjs",
     "lint": "eslint rollup.config.js src/ test/ --fix --ext .mjs",
     "push": "npm run build && git push --follow-tags origin master && npm publish",
     "rls": "standard-version --release-as",
-    "start": "TZ=UTC NODE_ENV=production node index.js",
+    "start": "TZ=UTC NODE_ENV=production node index.mjs",
     "test": "mocha --exit",
     "v": "node -e \"console.log(require('./package.json').version)\""
   },

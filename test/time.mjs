@@ -46,6 +46,12 @@ describe('time', () => {
 				done()
 			}).catch(done)
 		})
+		it('03 - Should support returning a custom response when the delay is over.', done => {
+			delay(10,'hello').then(v => {
+				assert.equal(v,'hello')
+				done()
+			}).catch(done)
+		})
 	})
 	describe('.Timer', () => {
 		it('01 - Should measure time.', async () => {

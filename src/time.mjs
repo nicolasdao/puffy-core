@@ -20,15 +20,16 @@ const HOUR = 60*MINUTE
  * Creates an empty promise that returns after a certain delay. This promise also contain an extra API called 'cancel' which allows to
  * cancel the execution of that promise (e.g., p.cancel())
  * 
- * @param  {Number|[Number]} timeout 	Default 100ms. If array, it must contain 2 numbers representing an interval used to select a random number
+ * @param  {Number|[Number]} 	timeout 	Default 100ms. If array, it must contain 2 numbers representing an interval used to select a random number
+ * @param  {Object}				resp		Response object returned when the timeout is over.
  * 
- * @return {Promise}         			(1) Cancellable promise
+ * @return {Promise}			promise		(1) Cancellable promise
  *
  * (1) Example:
  * 		const d = delay(3000)
  *   	d.cancel()
  */
-export const delay = (timeout) => {
+export const delay = (timeout, resp) => {
 	let tRef
 	let finished = false
 	let output = Promise.resolve(null).then(() => {
@@ -55,7 +56,7 @@ export const delay = (timeout) => {
 		return new Promise(onSuccess => {
 			tRef = setTimeout(() => {
 				finished = true
-				onSuccess()
+				onSuccess(resp)
 			}, t)
 		})
 	})

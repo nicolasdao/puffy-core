@@ -58,6 +58,45 @@ export const catchErrors = exec => {
 }
 
 /**
+ * @param  {Object}		metadata
+ * 
+ * @return {Function}
+ */
+export const wrapCustomErrors = metadata => {
+	const addMeta = metadata 
+		? x => {
+			if (x)
+				x.metadata = metadata
+			return x
+		}
+		: x => x
+	return (...args) => {
+		if (!args.length)
+			return new Error('Unknown error')
+
+		const [head, ...rest] = args
+		const [headError, ...errors] = _parseToErrors(head)
+		let merge = false
+		for (let i=0;i<rest.length;i++) {
+			const error = rest[i]
+			if (error) {
+				if (error.merge && !error.message && !error.stack)
+					merge = true
+				else
+					errors.push(..._parseToErrors(error))
+			}
+		}
+
+		if (merge) 
+			return addMeta(new Error([headError,...errors].map(e => e.stack).join('\n')))
+		else {
+			headError.errors = errors
+			return addMeta(headError)
+		}
+	}
+}
+
+/**
  * Create a new error that wraps others. How to use it:
  * 		const myAsyncFunction = () => catchErrors((async () => {
  * 			const [errors, data] = await otherAsyncFunc()
@@ -73,29 +112,35 @@ export const catchErrors = exec => {
  * 
  * @return {Error}		error
  */
-export const wrapErrors = (...args) => {
-	if (!args.length)
-		return new Error('Unknown error')
+export const wrapErrors = wrapCustomErrors()
 
-	const [head, ...rest] = args
-	const [headError, ...errors] = _parseToErrors(head)
-	let merge = false
-	for (let i=0;i<rest.length;i++) {
-		const error = rest[i]
-		if (error) {
-			if (error.merge && !error.message && !error.stack)
-				merge = true
-			else
-				errors.push(..._parseToErrors(error))
+/**
+ * Merges all the metadata values from each error into a single object. The latest error's metadata takes precedence.
+ * 
+ * @param  {[Error]}	errors[]
+ * @param  {Object}			.metadata
+ * 
+ * @return {Object}		metadata
+ */
+export const getErrorMetadata = errors => {
+	if (!errors || !errors.length)
+		return null
+	
+	let metadata = null
+	for(let i=errors.length-1;i>=0;i--) {
+		const e = errors[i]
+		if (e.metadata) {
+			if (!metadata)
+				metadata = e.metadata
+			else if (typeof(metadata) == 'object' && !Array.isArray(metadata) && typeof(e.metadata) == 'object' && !Array.isArray(e.metadata)) {
+				for (let [key, value] of Object.entries(e.metadata)) {
+					if (!metadata[key])
+						metadata[key] = value
+				}
+			}
 		}
 	}
-
-	if (merge) 
-		return new Error([headError,...errors].map(e => e.stack).join('\n'))
-	else {
-		headError.errors = errors
-		return headError
-	}
+	return metadata
 }
 
 export const mergeErrors = errors => {

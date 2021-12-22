@@ -174,10 +174,13 @@ console.log(formatDate(refDate, { format:'The dd{nth} of MMM, yyyy' })) // 'The 
 > CommonJS API: `const { error } = require('puffy-core')`
 
 ```js
-import { catchErrors, wrapErrors, mergeErrors } from 'puffy-core/error'
+import { catchErrors, wrapErrors, wrapCustomErrors, mergeErrors, getErrorMetadata } from 'puffy-core/error'
 
 const asyncSucceed = () => new Promise(next => next(123))
-const asyncFail = () => new Promise((,fail) => fail(new Error('Boom')))
+const asyncFail = () => new Promise((_,fail) => fail(new Error('Boom')))
+// Add metadata to an error
+const meta = { hello:'world' }
+const asyncFailWithMetadata = () => new Promise((_,fail) => fail(wrapCustomErrors(meta)('Boom')))
 const syncSucceed = () => 123
 const syncFail = () => { throw new Error('Boom') }
 
@@ -216,6 +219,16 @@ const main = async () => {
 	} else
 		console.log(`'syncFail' succeeded`)
 
+	// Adds metadata to errors
+	const [errors05, data05] = await catchErrors(asyncFailWithMetadata())
+	if (errors05) {
+		console.log('Shows error metadata')
+		console.log([errors05[0].metadata])
+		// Merges all the metadata into single object
+		console.log(getErrorMetadata(errors05))
+		allErrors.push(...errors05)
+	}
+
 	// Creates a new Error object with all the errors in it.
 	if (allErrors.length)
 		throw wrapErrors('A few errors occured', allErrors)
@@ -235,6 +248,7 @@ catchErrors(main()).then(([errors, data]) => {
 > ```js
 > wrapErrors('I am an error', new Error('I am another error'), [new Error('We are other errors')])
 > ```
+
 
 ## `math`
 
@@ -412,14 +426,34 @@ import { delay, Timer } from 'puffy-core/time'
 
 const main = async () => {
 	const start = Date.now()
+	// 1. Creating a 2 seconds delay
 	await delay(2000)
 	console.log(`${Date.now() - start} milliseconds have passed.`)
 
+	// 2. Creating and starting a new timer
 	const timer = new Timer()
-	await delay([1000, 5000]) // random delay between 1000 and 5000 ms.
+	
+	// 3. Creating a random delay between 1000 and 5000 ms.
+	await delay([1000, 5000]) 
+	
+	// 4. Logging the ellapsed time
 	console.log(`${timer.time('second')} seconds have passed.`)
 
-	timer.reStart() // equivalent to timer.time('second', true)
+	// 5. Restaring the timer. This is equivalent to timer.time('second', true)
+	timer.reStart() 
+
+	// 6. Creating a custom response after the delay
+	const r = await delay(1000, { hello:'world' })
+	console.log(r) // { hello:'world' }
+
+	// 7. Cancelling a delay. This can be required to prevent other actions to be triggered or to prevent a serverless function to run longer than it should.
+	const race1 = delay(5000, 'race1')
+	const race2 = delay(3000, 'race2')
+	const winner = await Promise.race([race1, race2])
+	if (winner == 'race1')
+		race2.cancel()
+	else
+		race1.cancel()
 }
 
 main()
