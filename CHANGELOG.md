@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.5.0](https://github.com/nicolasdao/puffy-core/compare/v0.4.2...v0.5.0) (2021-12-22)
+
+
+### Features
+
+* Add support for adding metadata into errors ([7c05f98](https://github.com/nicolasdao/puffy-core/commit/7c05f98a15d8db20d6ff5de140135c6612aa44f1))
+
 ### [0.4.2](https://github.com/nicolasdao/puffy-core/compare/v0.4.1...v0.4.2) (2021-11-23)
 
 
