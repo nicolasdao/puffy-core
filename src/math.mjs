@@ -13,6 +13,7 @@ API:
 	- median
 	- getRandomNumber
 	- getRandomNumbers
+	- percentile
 */
 
 /**
@@ -50,7 +51,7 @@ export const stdDev = (arr=[], fn) => {
 }
 
 /**
- * Calculates the median deviation of a specific field on an array objects
+ * Calculates the median of a specific field on an array objects
  * 
  * @param  {Array}   	arr 	e.g. [{ name: 'Nic', age: 36 }, { name: 'Boris', age: 30 }]
  * @param  {Function} 	fn  	e.g. x => x.age
@@ -60,7 +61,7 @@ export const median = (arr=[], fn) => {
 	const f = fn || (x => x)
 	const l = arr.length
 	if (l == 0)
-		return null
+		return 0
 	// odd length
 	else if (l & 1) 
 		return arr.map(x => f(x)).sort((a,b) => a-b)[Math.floor(l/2)]
@@ -70,6 +71,48 @@ export const median = (arr=[], fn) => {
 		const idx_0 = idx_1 - 1
 		const a = arr.map(x => f(x)).sort((a,b) => a-b)
 		return (a[idx_0] + a[idx_1])/2
+	}
+}
+
+/**
+ * High-order function that helps to calculate percentile of a specific field on an array objects.
+ * NOTES: Uses the nearest-rank algorithm (https://en.wikipedia.org/wiki/Percentile#The_nearest-rank_method)
+ * 
+ * @param  {Number}   	nth		Nth percentile
+ * 
+ * @return {Function}
+ */
+export const percentile = nth => {
+	if (nth === undefined || nth === null)
+		throw new Error('Missing required argument \'nth\'')
+	if (isNaN(nth*1))
+		throw new Error(`Wrong argument exception. 'nth' is expected to be a number. Found \`${nth}\` instead.`)
+	
+	nth = Math.round(nth*1)
+
+	if (nth < 0 || nth > 100)
+		throw new Error(`Wrong argument exception. 'nth' must be a value between 0 and 100. Found \`${nth}\` instead.`)
+
+	const factor = nth/100
+
+	/**
+	 * Calculates the nth percentile of a collection using an optional mapping function.
+	 * NOTES: Uses the nearest-rank algorithm (https://en.wikipedia.org/wiki/Percentile#The_nearest-rank_method)
+	 * 
+	 * @param  {Array}   	arr 	e.g. [{ name: 'Nic', age: 36 }, { name: 'Boris', age: 30 }]
+	 * @param  {Function} 	fn  	e.g. x => x.age
+	 * @return {Number}       		e.g. 33
+	 */
+	return (arr=[], fn) => {
+		const f = fn || (x => x)
+		const l = arr.length
+		if (l == 0)
+			return 0
+
+		const sortedAscArray = arr.map(x => f(x)).sort((a,b) => a-b)
+		const index = factor == 0 ? 0 : Math.ceil(factor*l)-1
+
+		return sortedAscArray[index]
 	}
 }
 
@@ -107,6 +150,5 @@ export const getRandomNumbers = options => {
 		return acc
 	}, { data: [], s: _size }).data
 }
-
 
 const _seed = (size=0) => Array.apply(null, Array(size))

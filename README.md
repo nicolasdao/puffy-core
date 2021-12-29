@@ -255,19 +255,28 @@ catchErrors(main()).then(([errors, data]) => {
 > CommonJS API: `const { math } = require('puffy-core')`
 
 ```js
-import { avg, stdDev, median, getRandomNumber, getRandomNumbers } from 'puffy-core/math'
+import { avg, stdDev, median, percentile, getRandomNumber, getRandomNumbers } from 'puffy-core/math'
 
 // avg
 console.log(avg([5,5,5,5,5])) // 5
-console.log(avg([1,2,3,4])) // 2.5
+console.log(avg([1,2,3,4]))   // 2.5
 
 // stdDev
 console.log(stdDev([5,5,5,5,5])) // 0
-console.log(stdDev([1,2,3,4])) // 1.118033988749895
+console.log(stdDev([1,2,3,4]))   // 1.118033988749895
 
 // median
 console.log(median([5,5,5,5,5])) // 5
-console.log(median([1,2,3,4])) // 2.5
+console.log(median([1,2,3,4]))   // 2.5
+
+// percentile
+const percentile5th = percentile(5)
+const percentile75th = percentile(75)
+const percentile95th = percentile(95)
+const data = [12,45,23,87,13,54,23,12,1,1,23,67,54,34,35,43,27,56]
+console.log(percentile5th(data))  // 1
+console.log(percentile75th(data)) // 54
+console.log(percentile95th(data)) // 87
 
 // getRandomNumber
 console.log(getRandomNumber()) // 0.37165509291630117

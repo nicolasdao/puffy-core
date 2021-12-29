@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 
 import { assert } from 'chai'
-import { avg, stdDev, median } from '../src/math.mjs'
+import { avg, stdDev, median, percentile } from '../src/math.mjs'
 
 describe('math', () => {
 	describe('.avg', () => {
@@ -38,6 +38,17 @@ describe('math', () => {
 		})
 		it('02 - Should calculate the median of an array of object when an identity function is specified.', () => {
 			assert.equal(median([{ name:'Nic', age:40 },{ name:'Lin', age:30 }], x => x.age), 35)
+		})
+	})
+	describe('.percentile', () => {
+		it('01 - Should calculate the 0th, 5th, 30th, 40th, 50th and 100th.', () => {
+			const values = [15, 20, 35, 40, 50]
+			assert.equal(percentile(0)(values), 15)
+			assert.equal(percentile(5)(values), 15)
+			assert.equal(percentile(30)(values), 20)
+			assert.equal(percentile(40)(values), 20)
+			assert.equal(percentile(50)(values), 35)
+			assert.equal(percentile(100)(values), 50)
 		})
 	})
 })
