@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.1](https://github.com/nicolasdao/puffy-core/compare/v0.5.0...v0.5.1) (2021-12-29)
+
+
+### Features
+
+* Add support for math.percentile ([e4cf49e](https://github.com/nicolasdao/puffy-core/commit/e4cf49e703a9e037bf9c7f9d73b21d0288bcb796))
+
 ## [0.5.0](https://github.com/nicolasdao/puffy-core/compare/v0.4.2...v0.5.0) (2021-12-22)
 
 
