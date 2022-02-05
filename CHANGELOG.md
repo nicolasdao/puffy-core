@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.2](https://github.com/nicolasdao/puffy-core/compare/v0.5.1...v0.5.2) (2022-02-05)
+
+
+### Features
+
+* Add support for a curried version of the wrapErrors function ([cff56e3](https://github.com/nicolasdao/puffy-core/commit/cff56e3c09b75380f7a005edeb9a57670d09e46e))
+
 ### [0.5.1](https://github.com/nicolasdao/puffy-core/compare/v0.5.0...v0.5.1) (2021-12-29)
 
 
