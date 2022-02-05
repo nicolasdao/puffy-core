@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 					
 import { assert } from 'chai'
-import { catchErrors, wrapErrors, wrapCustomErrors, mergeErrors, getErrorMetadata } from '../src/error.mjs'
+import { catchErrors, wrapErrors, wrapErrorsFn, wrapCustomErrors, mergeErrors, getErrorMetadata } from '../src/error.mjs'
 											
 describe('error', () => {
 	describe('.catchErrors', () => {
@@ -201,6 +201,39 @@ describe('error', () => {
 			assert.isOk(errors02[0].stack.indexOf('Should fail') >= 0)
 			assert.isOk(errors02[0].stack.indexOf('I\'m an error too') >= 0)
 			assert.isOk(errors02[0].stack.indexOf('We are errors') >= 0)
+		})
+	})
+	describe('.wrapErrorsFn', () => {
+		it('01 - Should stack all errors in a wrapping error', () => {
+
+			const robustSyncFn01 = (fail) => catchErrors(() => {
+				if (fail)
+					throw new Error('Should fail')
+				else
+					return 123
+			})
+
+			const robustSyncFn = (fail) => catchErrors(() => {
+				const e = wrapErrorsFn('robustSyncFn failed')
+				const [errors, result] = robustSyncFn01(fail)
+				if (errors)
+					throw e(errors)
+				else
+					return result
+			})
+
+			const [errors01, result01] = robustSyncFn()
+
+			assert.isNotOk(errors01, '01')
+			assert.equal(result01, 123 ,'02')
+
+			const [errors02, result02] = robustSyncFn(true)
+
+			assert.isOk(errors02, '03')
+			assert.isNotOk(result02 ,'04')
+			assert.equal(errors02.length, 2, '05')
+			assert.equal(errors02[0].message, 'robustSyncFn failed', '06')
+			assert.equal(errors02[1].message, 'Should fail', '07')
 		})
 	})
 	describe('.wrapCustomErrors', () => {

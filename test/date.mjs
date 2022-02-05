@@ -64,7 +64,6 @@ describe('date', () => {
 			assert.equal(formatDate(refDate, { format:'dd/MM/yy HH:mm:ss' }), '12/10/21 13:45:21')
 			assert.equal(formatDate(refDate, { format:'The dd of MMM, yyyy' }), 'The 12 of October, 2021')
 			assert.equal(formatDate(refDate, { format:'The dd{nth} of MMM, yyyy' }), 'The 12th of October, 2021')
-
 		})
 	})
 })

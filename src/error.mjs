@@ -115,6 +115,24 @@ export const wrapCustomErrors = metadata => {
 export const wrapErrors = wrapCustomErrors()
 
 /**
+ * Create a new error that wraps others. How to use it:
+ * 		const myAsyncFunction = () => catchErrors((async () => {
+ * 			const [errors, data] = await otherAsyncFunc()
+ * 			if (errors) 
+ *				throw wrapErrors(`Boom! it broke for XYZ...`, errors)
+ *
+ *			return data
+ * 		})())
+ * 
+ * @param  {String}		msg				Error message.
+ * @param  {Array}		errors			Previous errors.
+ * @param  {Boolean}	options.merge	Default false. If true, all the errors' stacks are merge into the body of the new error.
+ * 
+ * @return {Error}		error
+ */
+export const wrapErrorsFn = (...args) => (..._args) => wrapErrors(...args, ..._args)
+
+/**
  * Merges all the metadata values from each error into a single object. The latest error's metadata takes precedence.
  * 
  * @param  {[Error]}	errors[]
