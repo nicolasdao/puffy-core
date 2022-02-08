@@ -174,7 +174,7 @@ console.log(formatDate(refDate, { format:'The dd{nth} of MMM, yyyy' })) // 'The 
 > CommonJS API: `const { error } = require('puffy-core')`
 
 ```js
-import { catchErrors, wrapErrors, wrapCustomErrors, mergeErrors, getErrorMetadata } from 'puffy-core/error'
+import { catchErrors, wrapErrors, wrapErrorsFn, wrapCustomErrors, mergeErrors, getErrorMetadata } from 'puffy-core/error'
 
 const asyncSucceed = () => new Promise(next => next(123))
 const asyncFail = () => new Promise((_,fail) => fail(new Error('Boom')))
@@ -184,7 +184,7 @@ const asyncFailWithMetadata = () => new Promise((_,fail) => fail(wrapCustomError
 const syncSucceed = () => 123
 const syncFail = () => { throw new Error('Boom') }
 
-const main = async () => {
+const main = async options => {
 	const allErrors = []
 
 	// Handles Promises 
@@ -230,9 +230,15 @@ const main = async () => {
 	}
 
 	// Creates a new Error object with all the errors in it.
-	if (allErrors.length)
-		throw wrapErrors('A few errors occured', allErrors)
-	else
+	if (allErrors.length) {
+		// This helps wrapping the error stack under another error that provide more context. This is equivalent to:
+		// const e = (...errors) => wrapErrors(`This API broke`, ...errors)
+		const e = wrapErrorsFn(`This API broke`)
+		if (options && options.wrapErrors)
+			throw e(allErrors)
+		else
+			throw wrapErrors('A few errors occured', allErrors)
+	} else
 		return 'no errors'
 }
 
@@ -244,10 +250,12 @@ catchErrors(main()).then(([errors, data]) => {
 })
 ```
 
-> NOTE: __`wrapErrors`__ supports an arbitrary amount of inputs with both string and Error types:
-> ```js
-> wrapErrors('I am an error', new Error('I am another error'), [new Error('We are other errors')])
-> ```
+> NOTES: 
+>	- __`wrapErrors`__ supports an arbitrary amount of inputs with both string and Error types:
+>	```js
+>	wrapErrors('I am an error', new Error('I am another error'), [new Error('We are other errors')])
+>	```
+>	- __`wrapErrorsFn`__ is sugarcode for `(...errors) => wrapErrors(`This API broke`, ...errors)`.
 
 
 ## `math`
