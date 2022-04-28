@@ -26,6 +26,8 @@ npm i puffy-core
 >	- [About this project](#about-this-project)
 >	- [Building this project for both CommonJS and ES6 modules](#building-this-project-for-both-commonjs-and-es6-modules)
 >	- [Unit test](#unit-test)
+> * [Annexes](#annexes)
+>	- [Creating URLs with the `URL` object](#creating-urls-with-the-url-object)
 > * [License](#license)
 
 # APIs
@@ -499,7 +501,8 @@ main()
 
 ## `url`
 
-> CommonJS API: `const { url } = require('puffy-core')`
+> - CommonJS API: `const { url } = require('puffy-core')`
+> - To create new URLs safely, use the native `URL` object as described in the [Annexes](#annexes) under the [Creating URLs with the `URL` object](#creating-urls-with-the-url-object) section.
 
 ```js
 import { getUrlParts } from 'puffy-core/url'
@@ -560,6 +563,22 @@ This command compiles the ES6 modules located under the `src` folder to `.cjs` f
 
 ```
 npm test
+```
+
+# Annexes
+## Creating URLs with the `URL` object
+
+The `URL` is a native object supported in both browser and NodeJS environments:
+
+```js
+const u = new URL('https://example.com')
+console.log(u.toString()) // 'https://example.com'
+u.pathname = 'blog' // or u.pathname = '/blog'
+console.log(u.toString()) // 'https://example.com/blog'
+u.searchParams.set('hello', 'world')
+console.log(u.toString()) // 'https://example.com/blog?hello=world'
+u.hash = 'footer' // or u.hash = '#footer'
+console.log(u.toString()) // 'https://example.com/blog?hello=world#footer'
 ```
 
 # License
