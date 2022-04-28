@@ -103,28 +103,49 @@ const stringEncoder = encoder()
 const stringToBase64 = stringEncoder('base64')
 const stringToBin = stringEncoder('bin')
 const stringToHex = stringEncoder('hex')
+const stringToBuffer = stringEncoder('buffer')
 
 const base64Encoder = encoder('base64')
 const base64ToString = base64Encoder()
 const base64ToBin = base64Encoder('bin')
 const base64ToHex = base64Encoder('hex')
+const base64ToBuffer = base64Encoder('buffer')
 
 const binEncoder = encoder('bin')
 const binToString = binEncoder()
 const binToBase64 = binEncoder('base64')
 const binToHex = binEncoder('hex')
+const binToBuffer = binEncoder('buffer')
 
-console.log(stringToBase64('hello world')) // 'aGVsbG8gd29ybGQ='
-console.log(stringToBin('hello world')) // '0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100'
-console.log(stringToHex('hello world')) // '68656C6C6F20776F726C64'
+const bufferEncoder = encoder('buffer')
+const bufferToString = bufferEncoder()
+const bufferToBase64 = bufferEncoder('base64')
+const bufferToHex = bufferEncoder('hex')
+const bufferToBin = bufferEncoder('bin')
 
-console.log(base64ToString('aGVsbG8gd29ybGQ=')) // 'hello world'
-console.log(base64ToBin('aGVsbG8gd29ybGQ=')) // '0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100'
-console.log(base64ToHex('aGVsbG8gd29ybGQ=')) // '68656C6C6F20776F726C64'
+const str = 'hello world'
+console.log(stringToBase64(str)) // 'aGVsbG8gd29ybGQ='
+console.log(stringToBin(str)) // '0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100'
+console.log(stringToHex(str)) // '68656C6C6F20776F726C64'
+console.log(stringToBuffer(str)) // <Buffer 68 65 6c 6c 6f 20 77 6f 72 6c 64>
 
-console.log(binToString('0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100')) // 'hello world'
-console.log(binToBase64('0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100')) // 'aGVsbG8gd29ybGQ='
-console.log(binToHex('0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100')) // '68656C6C6F20776F726C64'
+const base64Str = 'aGVsbG8gd29ybGQ='
+console.log(base64ToString(base64Str)) // 'hello world'
+console.log(base64ToBin(base64Str)) // '0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100'
+console.log(base64ToHex(base64Str)) // '68656C6C6F20776F726C64'
+console.log(base64ToBuffer(base64Str)) // <Buffer 68 65 6c 6c 6f 20 77 6f 72 6c 64>
+
+const binStr = '0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100'
+console.log(binToString(binStr)) // 'hello world'
+console.log(binToBase64(binStr)) // 'aGVsbG8gd29ybGQ='
+console.log(binToHex(binStr)) // '68656C6C6F20776F726C64'
+console.log(binToBuffer(binStr)) // <Buffer 68 65 6c 6c 6f 20 77 6f 72 6c 64>
+
+const buf = stringToBuffer('hello world')
+console.log(bufferToString(buf)) // 'hello world'
+console.log(bufferToBase64(buf)) // 'aGVsbG8gd29ybGQ='
+console.log(bufferToHex(buf)) // '68656C6C6F20776F726C64'
+console.log(bufferToBin(buf)) // '0110100001100101011011000110110001101111001000000111011101101111011100100110110001100100'
 
 // jwtDecode
 const { header, payload, signBase64 } = jwtDecode('YOUR JWT TOKEN HERE')
