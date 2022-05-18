@@ -196,6 +196,8 @@ console.log(formatDate(refDate, { format:'The dd{nth} of MMM, yyyy' })) // 'The 
 
 > CommonJS API: `const { error } = require('puffy-core')`
 
+This API uses a functional approach to handling errors. Instead of throwing errors, errors are accumulated. It is up to the software engineer to manage what to do with them. The Errors are accumulated in the inverse order of occurance. This means that the first error is the highest in the stack while the last error is at the bottom of the stack (i.e., the original error that occured in the first place).
+
 ```js
 import { catchErrors, wrapErrors, wrapErrorsFn, wrapCustomErrors, mergeErrors, getErrorMetadata } from 'puffy-core/error'
 
