@@ -9,6 +9,7 @@
 /*
 API:
 	- diff
+	- exists
 	- extractFlattenedJSON
 	- getProperty
 	- getType
@@ -19,6 +20,15 @@ API:
 	- same
 	- setProperty
 */
+
+/**
+ * Checks if an object exists, i.e., it is not equal to null or undefined.
+ * 
+ * @param  {Object}		o
+ * 
+ * @return {Boolean}	result
+ */
+export const exists = o => o !== null && o !== undefined
 
 export const merge = (...objs) => objs.reduce((acc, obj) => { //Object.assign(...objs.map(obj => JSON.parse(JSON.stringify(obj))))
 	obj = obj || {}

@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 
 import { assert } from 'chai'
-import { merge, diff, mirror, setProperty, getProperty, extractFlattenedJSON } from '../src/obj.mjs'
+import { merge, diff, mirror, setProperty, getProperty, extractFlattenedJSON, exists, isEmpty } from '../src/obj.mjs'
 
 describe('obj', () => {
 	describe('.merge', () => {
@@ -150,6 +150,23 @@ describe('obj', () => {
 					}]
 				}
 			})
+		})
+	})
+	describe('.exists', () => {
+		it('01 - Should confirm whether an object exists or not (i.e., is not equal to null or undefined)', () => {
+			assert.strictEqual(exists(), false)
+			assert.strictEqual(exists(undefined), false)
+			assert.strictEqual(exists(null), false)
+			assert.strictEqual(exists({}), true)
+			assert.strictEqual(exists(0), true)
+			assert.strictEqual(exists('Hello'), true)
+		})
+	})
+	describe('.isEmpty', () => {
+		it('01 - Should confirm whether an object is empty or not', () => {
+			assert.strictEqual(isEmpty(), true) 
+			assert.strictEqual(isEmpty({}), true) 
+			assert.strictEqual(isEmpty({ hello:'world' }), false) 
 		})
 	})
 })
