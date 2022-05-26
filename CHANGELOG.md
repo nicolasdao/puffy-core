@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.6](https://github.com/nicolasdao/puffy-core/compare/v0.5.5...v0.5.6) (2022-05-26)
+
+
+### Features
+
+* Add support for obj.exists API ([413edab](https://github.com/nicolasdao/puffy-core/commit/413edab3e7c0f2c84b6a4904e7cda833850d3f5a))
+
 ### [0.5.5](https://github.com/nicolasdao/puffy-core/compare/v0.5.4...v0.5.5) (2022-05-18)
 
 ### [0.5.4](https://github.com/nicolasdao/puffy-core/compare/v0.5.3...v0.5.4) (2022-04-28)
