@@ -10,6 +10,8 @@
 API:
 	- diff
 	- exists
+	- existsAll
+	- existsAny
 	- extractFlattenedJSON
 	- getProperty
 	- getType
@@ -29,6 +31,9 @@ API:
  * @return {Boolean}	result
  */
 export const exists = o => o !== null && o !== undefined
+export const existsAny = (...args) => args.some(exists)
+export const existsAll = (...args) => args.every(exists)
+
 
 export const merge = (...objs) => objs.reduce((acc, obj) => { //Object.assign(...objs.map(obj => JSON.parse(JSON.stringify(obj))))
 	obj = obj || {}

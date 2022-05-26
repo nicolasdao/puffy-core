@@ -322,7 +322,7 @@ console.log(getRandomNumbers({ start:1000, end:3000, size:5 })) // [ 1434, 2276,
 > CommonJS API: `const { obj } = require('puffy-core')`
 
 ```js
-import { merge, setProperty, getProperty, extractFlattenedJSON, exists, isEmpty } from 'puffy-core/obj'
+import { merge, setProperty, getProperty, extractFlattenedJSON, exists, existsAny, existsAll, isEmpty } from 'puffy-core/obj'
 
 // merge
 console.log(merge(
@@ -373,6 +373,15 @@ console.log(exists(null)) // true
 console.log(exists({})) // false
 console.log(exists(0)) // false
 console.log(exists('Hello')) // false
+
+// existsAny
+console.log(existsAny(null, undefined)) // false
+console.log(existsAny(0, undefined)) // true
+
+// existsAll
+console.log(existsAll(null, undefined)) // false
+console.log(existsAll(0, undefined)) // false
+console.log(existsAll(0, '')) // true
 
 // isEmpty
 console.log(isEmpty()) // true
