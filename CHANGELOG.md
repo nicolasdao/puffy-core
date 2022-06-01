@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.8](https://github.com/nicolasdao/puffy-core/compare/v0.5.7...v0.5.8) (2022-06-01)
+
+
+### Features
+
+* Add support for chaining functions ([9f08990](https://github.com/nicolasdao/puffy-core/commit/9f089901e3f48363000e6510b191d7a352b54404))
+
 ### [0.5.7](https://github.com/nicolasdao/puffy-core/compare/v0.5.6...v0.5.7) (2022-05-26)
 
 
