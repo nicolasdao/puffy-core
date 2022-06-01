@@ -16,6 +16,7 @@ npm i puffy-core
 >	- [`crypto`](#crypto)
 >	- [`date`](#date)
 >	- [`error`](#error)
+>	- [`func`](#func)
 >	- [`math`](#math)
 >	- [`obj`](#obj)
 >	- [`string`](#string)
@@ -199,7 +200,9 @@ console.log(formatDate(refDate, { format:'The dd{nth} of MMM, yyyy' })) // 'The 
 This API uses a functional approach to handling errors. Instead of throwing errors, errors are accumulated. It is up to the software engineer to manage what to do with them. The Errors are accumulated in the inverse order of occurance. This means that the first error is the highest in the stack while the last error is at the bottom of the stack (i.e., the original error that occured in the first place).
 
 ```js
-import { catchErrors, wrapErrors, wrapErrorsFn, wrapCustomErrors, mergeErrors, getErrorMetadata } from 'puffy-core/error'
+import { catchErrors, wrapErrors, wrapErrorsFn, wrapCustomErrors, mergeErrors, getErrorMetadata, PuffyResponse } from 'puffy-core/error'
+
+// 'catchErrors' always returns a 2 items array: [errors, data]. This array is of type 'PuffyResponse'.
 
 const asyncSucceed = () => new Promise(next => next(123))
 const asyncFail = () => new Promise((_,fail) => fail(new Error('Boom')))
@@ -282,6 +285,59 @@ catchErrors(main()).then(([errors, data]) => {
 >	```
 >	- __`wrapErrorsFn`__ is sugarcode for `(...errors) => wrapErrors(`This API broke`, ...errors)`.
 
+## `func`
+
+> CommonJS API: `const { func } = require('puffy-core')`
+
+```js
+import { chainAsync, chainSync } from 'puffy-core/func'
+import { catchErrors } from 'puffy-core/error'
+
+const main = async () => {
+	const [errors01, data01] = await chainAsync(
+		() => Promise.resolve(1),								// 1
+		previous => Promise.resolve(previous+1),				// 2
+		previous => previous+2,									// 3
+		previous => catchErrors(Promise.resolve(previous+1)),	// 4
+		previous => previous+3									// 5
+	)
+
+	console.log(errors01) // null
+	console.log(data01) // { data: [ 1, 2, 4, 5, 8 ], value: 8 } // where value is the last result.
+
+	// Notice that the 4th function does not return [errors, data] to the 5th function, but data instead. 
+	// This is by design. catchErrors return a array of type PuffyResponse which is interpreted by chainAsync
+	// so that only the result is return if no errors occured.
+
+	const [errors02, data02] = await chainAsync(
+		() => Promise.resolve(1),
+		previous => Promise.resolve(previous+1).then(() => { throw new Error('Boom')})
+	)
+
+	console.log(errors02) // [{ message:'Boom' }]
+	console.log(data02) // null
+
+	const [errors03, data03] = await chainAsync(
+		() => Promise.resolve(1),
+		previous => catchErrors(Promise.resolve(previous+1).then(() => { throw new Error('Boom')}))
+	)
+
+	console.log(errors03) // [{ message:`'chainAsync' function failed` }, { message:'Boom' }]
+	console.log(data03) // null
+
+	// Same API than 'chainAsync', but for synchronous functions.
+	const [errors04, data04] = chainSync(
+		() => 1,
+		previous => previous+1,
+		previous => previous+2
+	)
+
+	console.log(errors04) // null
+	console.log(data04) // null
+}
+
+main()
+```
 
 ## `math`
 

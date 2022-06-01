@@ -9,9 +9,15 @@
 /*
 API:
 	- catchErrors
-	- wrapErrors
+	- getErrorMetadata
 	- mergeErrors
+	- PuffyResponse
+	- wrapCustomErrors
+	- wrapErrors
+	- wrapErrorsFn
 */
+
+export class PuffyResponse extends Array {}
 
 /**
  * Makes sure that a promise marshall the error instead of failing.  How to use it:
@@ -37,14 +43,14 @@ export const catchErrors = exec => {
 
 	if (exec.then && typeof(exec.then) == 'function')
 		return exec
-			.then(data => ([null,data]))
+			.then(data => new PuffyResponse(null, data))
 			.catch(_formatErrors)
 
 	const t = typeof(exec)
 	if (t == 'function') {
 		try {
 			const data = exec()
-			return [null, data]
+			return new PuffyResponse(null, data)
 		} catch (err) {
 			return _formatErrors(err)
 		}
@@ -161,6 +167,14 @@ export const getErrorMetadata = errors => {
 	return metadata
 }
 
+/**
+ * Merges an array of errors into a single Error instance.
+ * 
+ * @param  {[Error]}	errors
+ * @return {Error}		error
+ * @return {String}			.message	errors[0].message
+ * @return {String}			.stack		Concatenated errors' stacks
+ */
 export const mergeErrors = errors => {
 	errors = errors || []
 	if (!errors.length)
@@ -172,6 +186,13 @@ export const mergeErrors = errors => {
 	return error
 }
 
+/**
+ * Parses any object into an array of Error instances.
+ * 
+ * @param  {Object}		e
+ * 
+ * @return {[Error]}	errors
+ */
 const _parseToErrors = e => {
 	if (!e)
 		return [new Error('Unknown error')]
@@ -194,12 +215,20 @@ const _parseToErrors = e => {
 		return [new Error('Unknown error')]
 }
 
+/**
+ * Parses an Error instance with an 'errors' property into a PuffyResponse instance.
+ * 
+ * @param  {Error}			err
+ * @param  {[Error]}			.errors
+ * 
+ * @return {PuffyResponse}	puffyResponse
+ */
 const _formatErrors = err => {
 	if (err && err.errors && err.errors[0]) {
 		const errors = [err, ...err.errors]
 		err.errors = null
-		return [errors, null]
+		return new PuffyResponse(errors, null)
 	} else
-		return [[err],null]
+		return new PuffyResponse([err],null)
 }
 

@@ -10,6 +10,7 @@
     "./crypto": "./src/crypto.mjs",
     "./date": "./src/date.mjs",
     "./error": "./src/error.mjs",
+    "./func": "./src/func.mjs",
     "./math": "./src/math.mjs",
     "./obj": "./src/obj.mjs",
     "./string": "./src/string.mjs",

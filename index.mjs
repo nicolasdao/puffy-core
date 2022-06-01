@@ -1,68 +1,47 @@
-import { catchErrors, wrapErrors, wrapCustomErrors, mergeErrors, getErrorMetadata } from './src/error.mjs'
-
-const asyncSucceed = () => new Promise(next => next(123))
-const asyncFail = () => new Promise((_,fail) => fail(new Error('Boom')))
-// Add metadata to an error
-const meta = { hello:'world' }
-const asyncFailWithMetadata = () => new Promise((_,fail) => fail(wrapCustomErrors(meta)('Boom')))
-const syncSucceed = () => 123
-const syncFail = () => { throw new Error('Boom') }
+import { chainAsync, chainSync } from 'puffy-core/func'
+import { catchErrors } from 'puffy-core/error'
 
 const main = async () => {
-	const allErrors = []
+	const [errors01, data01] = await chainAsync(
+		() => Promise.resolve(1),								// 1
+		previous => Promise.resolve(previous+1),				// 2
+		previous => previous+2,									// 3
+		previous => catchErrors(Promise.resolve(previous+1)),	// 4
+		previous => previous+3									// 5
+	)
 
-	// Handles Promises 
-	const [errors01, data01] = await catchErrors(asyncSucceed())
-	if (errors01) {
-		console.log(`'asyncSucceed' failed`)
-		allErrors.push(...errors01)
-	} else
-		console.log(`'asyncSucceed' succeeded`)
+	console.log(errors01) // null
+	console.log(data01) // { data: [ 1, 2, 4, 5, 8 ], value: 8 } // where value is the last result.
 
+	// Notice that the 4th function does not return [errors, data] to the 5th function, but data instead. 
+	// This is by design. catchErrors return a array of type PuffyResponse which is interpreted by chainAsync
+	// so that only the result is return if no errors occured.
 
-	const [errors02, data02] = await catchErrors(asyncFail())
-	if (errors02) {
-		console.log(`'asyncFail' failed`)
-		allErrors.push(...errors02)
-	} else
-		console.log(`'asyncFail' succeeded`)
+	const [errors02, data02] = await chainAsync(
+		() => Promise.resolve(1),
+		previous => Promise.resolve(previous+1).then(() => { throw new Error('Boom')})
+	)
 
-	// Handles synchronous functions 
-	const [errors03, data03] = catchErrors(syncSucceed)
-	if (errors03) {
-		console.log(`'syncSucceed' failed`)
-		allErrors.push(...errors03)
-	} else
-		console.log(`'syncSucceed' succeeded`)
+	console.log(errors02) // [{ message:'Boom' }]
+	console.log(data02) // null
 
+	const [errors03, data03] = await chainAsync(
+		() => Promise.resolve(1),
+		previous => catchErrors(Promise.resolve(previous+1).then(() => { throw new Error('Boom')}))
+	)
 
-	const [errors04, data04] = catchErrors(syncFail)
-	if (errors04) {
-		console.log(`'syncFail' failed`)
-		allErrors.push(...errors04)
-	} else
-		console.log(`'syncFail' succeeded`)
+	console.log(errors03) // [{ message:`'chainAsync' function failed` }, { message:'Boom' }]
+	console.log(data03) // null
 
-	// Adds metadata to errors
-	const [errors05, data05] = await catchErrors(asyncFailWithMetadata())
-	if (errors05) {
-		console.log('Shows error metadata')
-		console.log([errors05[0].metadata])
-		// Merges all the metadata into single object
-		console.log(getErrorMetadata(errors05))
-		allErrors.push(...errors05)
-	}
+	// Same API than 'chainAsync', but for synchronous functions.
+	const [errors04, data04] = chainSync(
+		() => 1,
+		previous => previous+1,
+		previous => previous+2
+	)
 
-	// Creates a new Error object with all the errors in it.
-	if (allErrors.length)
-		throw wrapErrors('A few errors occured', allErrors)
-	else
-		return 'no errors'
+	console.log(errors04) // null
+	console.log(data04) // { data: [ 1, 2, 4 ], value: 4 }
 }
 
-catchErrors(main()).then(([errors, data]) => {
-	if (errors)
-		console.error(mergeErrors(errors).message)
-	else
-		console.log(data)
-})
+main()
