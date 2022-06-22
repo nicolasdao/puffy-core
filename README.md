@@ -16,6 +16,8 @@ npm i puffy-core
 >	- [`crypto`](#crypto)
 >	- [`date`](#date)
 >	- [`error`](#error)
+>		- [Quick start](#error-api---quick-start)
+>		- [Adding a response even when an error is thrown](#adding-a-response-even-when-an-error-is-thrown)
 >	- [`func`](#func)
 >	- [`math`](#math)
 >	- [`obj`](#obj)
@@ -194,7 +196,7 @@ console.log(formatDate(refDate, { format:'The dd{nth} of MMM, yyyy' })) // 'The 
 ```
 
 ## `error`
-
+### `error` API - Quick start
 > CommonJS API: `const { error } = require('puffy-core')`
 
 This API uses a functional approach to handling errors. Instead of throwing errors, errors are accumulated. It is up to the software engineer to manage what to do with them. The Errors are accumulated in the inverse order of occurance. This means that the first error is the highest in the stack while the last error is at the bottom of the stack (i.e., the original error that occured in the first place).
@@ -284,6 +286,32 @@ catchErrors(main()).then(([errors, data]) => {
 >	wrapErrors('I am an error', new Error('I am another error'), [new Error('We are other errors')])
 >	```
 >	- __`wrapErrorsFn`__ is sugarcode for `(...errors) => wrapErrors(`This API broke`, ...errors)`.
+
+### Adding a response even when an error is thrown
+
+In this scenario, a process may partially succeed. In those types of cases, we want to capture both the errors and the completed responses. Such process (in the example below `myProcess`) would behave like this:
+
+```js
+const [errors, resp] = await myProcess(allItems)
+if (errors)
+	manageErrors(errors)
+if (resp)
+	manageResponse(resp)
+```
+
+By default, using the `catchErrors` in conjunction with one of the wrapping error APIs (i.e., `wrapErrors`, `wrapErrorsFn`, `wrapCustomErrors`) does not behave as such. By default, the behavior is either fully succeeded or fully failed. To change that behavior, all the wrapping error APIs support a `response` API that can pass a response back. For example:
+
+```js
+import { catchErrors, wrapErrors } from 'puffy-core/error'
+
+const myProcess = items => catchErrors((async () => {
+	// ... process items and catch errors
+	if (errors)
+		throw wrapErrors(`Some items have failed`, errors).response(processedItems)
+	else
+		return processedItems
+})())
+```
 
 ## `func`
 

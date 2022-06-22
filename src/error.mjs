@@ -71,11 +71,24 @@ export const catchErrors = exec => {
 export const wrapCustomErrors = metadata => {
 	const addMeta = metadata 
 		? x => {
-			if (x)
+			if (x) {
 				x.metadata = metadata
+				if (!x.response)
+					x.response = data => {
+						x.__data = data
+						return x
+					}
+			}
 			return x
 		}
-		: x => x
+		: x => {
+			if (x && !x.response)
+				x.response = data => {
+					x.__data = data
+					return x
+				}
+			return x
+		}
 	return (...args) => {
 		if (!args.length)
 			return new Error('Unknown error')
@@ -220,6 +233,7 @@ const _parseToErrors = e => {
  * 
  * @param  {Error}			err
  * @param  {[Error]}			.errors
+ * @param  {Object}				.__data
  * 
  * @return {PuffyResponse}	puffyResponse
  */
@@ -227,8 +241,11 @@ const _formatErrors = err => {
 	if (err && err.errors && err.errors[0]) {
 		const errors = [err, ...err.errors]
 		err.errors = null
-		return new PuffyResponse(errors, null)
+		return new PuffyResponse(errors, (err||{}).__data||null)
 	} else
-		return new PuffyResponse([err],null)
+		return new PuffyResponse([err], (err||{}).__data||null) 
 }
+
+
+
 

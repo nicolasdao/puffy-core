@@ -202,6 +202,42 @@ describe('error', () => {
 			assert.isOk(errors02[0].stack.indexOf('I\'m an error too') >= 0)
 			assert.isOk(errors02[0].stack.indexOf('We are errors') >= 0)
 		})
+		it('06 - Should support returning data even when an error is thrown', () => {
+
+			const robustSyncFn01 = (fail) => catchErrors(() => {
+				if (fail)
+					throw new Error('Should fail')
+				else
+					return 123
+			})
+
+			const robustSyncFn = (fail) => catchErrors(() => {
+				const errorMsg = 'robustSyncFn failed'
+				const [errors, result] = robustSyncFn01(fail)
+				if (errors) {
+					throw wrapErrors(errorMsg, 'this is another error', errors, new Error('I\'m an error too'), [new Error('We are errors')]).response('hello')
+				}
+				else
+					return result
+			})
+
+			const [errors01, result01] = robustSyncFn()
+
+			assert.isNotOk(errors01, '01')
+			assert.equal(result01, 123 ,'02')
+
+			const [errors02, result02] = robustSyncFn(true)
+
+			assert.isOk(errors02)
+			assert.isOk(result02)
+			assert.equal(result02, 'hello')
+			assert.equal(errors02.length, 5)
+			assert.equal(errors02[0].message, 'robustSyncFn failed')
+			assert.equal(errors02[1].message, 'this is another error')
+			assert.equal(errors02[2].message, 'Should fail')
+			assert.equal(errors02[3].message, 'I\'m an error too')
+			assert.equal(errors02[4].message, 'We are errors')
+		})
 	})
 	describe('.wrapErrorsFn', () => {
 		it('01 - Should stack all errors in a wrapping error', () => {
@@ -235,9 +271,41 @@ describe('error', () => {
 			assert.equal(errors02[0].message, 'robustSyncFn failed', '06')
 			assert.equal(errors02[1].message, 'Should fail', '07')
 		})
+		it('02 - Should support returning data even when an error is thrown', () => {
+
+			const robustSyncFn01 = (fail) => catchErrors(() => {
+				if (fail)
+					throw new Error('Should fail')
+				else
+					return 123
+			})
+
+			const robustSyncFn = (fail) => catchErrors(() => {
+				const e = wrapErrorsFn('robustSyncFn failed')
+				const [errors, result] = robustSyncFn01(fail)
+				if (errors)
+					throw e(errors).response('hello')
+				else
+					return result
+			})
+
+			const [errors01, result01] = robustSyncFn()
+
+			assert.isNotOk(errors01, '01')
+			assert.equal(result01, 123 ,'02')
+
+			const [errors02, result02] = robustSyncFn(true)
+
+			assert.isOk(errors02, '03')
+			assert.isOk(result02 ,'04')
+			assert.equal(result02 ,'hello')
+			assert.equal(errors02.length, 2, '05')
+			assert.equal(errors02[0].message, 'robustSyncFn failed', '06')
+			assert.equal(errors02[1].message, 'Should fail', '07')
+		})
 	})
 	describe('.wrapCustomErrors', () => {
-		it('01 - Should stack all errors in a wrapping error while adding custom metadata to the error.', () => {
+		it('01 - Should stack all errors in a wrapping error while adding custom metadata to the error', () => {
 
 			const robustSyncFn01 = (fail) => catchErrors(() => {
 				if (fail)
@@ -264,6 +332,43 @@ describe('error', () => {
 
 			assert.isOk(errors02, '03')
 			assert.isNotOk(result02 ,'04')
+			assert.equal(errors02.length, 2, '05')
+			assert.equal(errors02[0].message, 'robustSyncFn failed', '06')
+			assert.equal(errors02[1].message, 'Should fail', '07')
+			assert.isOk(errors02[0].metadata, '08')
+			assert.equal(errors02[0].metadata.code, 123, '09')
+			assert.isOk(errors02[1].metadata, '10')
+			assert.equal(errors02[1].metadata.id, 456, '11')
+			assert.equal(errors02[1].metadata.code, 897, '12')
+		})
+		it('02 - Should support returning data even when an error is thrown', () => {
+
+			const robustSyncFn01 = (fail) => catchErrors(() => {
+				if (fail)
+					throw wrapCustomErrors({ id:456, code:897 })('Should fail')
+				else
+					return 123
+			})
+
+			const robustSyncFn = (fail) => catchErrors(() => {
+				const errorMsg = 'robustSyncFn failed'
+				const [errors, result] = robustSyncFn01(fail)
+				if (errors)
+					throw wrapCustomErrors({ code:123 })(errorMsg, errors).response('hello')
+				else
+					return result
+			})
+
+			const [errors01, result01] = robustSyncFn()
+
+			assert.isNotOk(errors01, '01')
+			assert.equal(result01, 123 ,'02')
+
+			const [errors02, result02] = robustSyncFn(true)
+
+			assert.isOk(errors02, '03')
+			assert.isOk(result02 ,'04')
+			assert.equal(result02 ,'hello')
 			assert.equal(errors02.length, 2, '05')
 			assert.equal(errors02[0].message, 'robustSyncFn failed', '06')
 			assert.equal(errors02[1].message, 'Should fail', '07')
