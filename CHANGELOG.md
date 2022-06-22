@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.9](https://github.com/nicolasdao/puffy-core/compare/v0.5.8...v0.5.9) (2022-06-22)
+
+
+### Features
+
+*  API - Add support for returning data even when an error is thrown ([b790d93](https://github.com/nicolasdao/puffy-core/commit/b790d93999371c621ae42019cc3ea7655622e1e1))
+
 ### [0.5.8](https://github.com/nicolasdao/puffy-core/compare/v0.5.7...v0.5.8) (2022-06-01)
 
 
