@@ -2,6 +2,8 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.5.10](https://github.com/nicolasdao/puffy-core/compare/v0.5.9...v0.5.10) (2022-07-25)
+
 ### [0.5.9](https://github.com/nicolasdao/puffy-core/compare/v0.5.8...v0.5.9) (2022-06-22)
 
 
