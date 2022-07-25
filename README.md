@@ -451,12 +451,12 @@ console.log(extractFlattenedJSON({
 // }
 
 // exists
-console.log(exists()) // true
-console.log(exists(undefined)) // true
-console.log(exists(null)) // true
-console.log(exists({})) // false
-console.log(exists(0)) // false
-console.log(exists('Hello')) // false
+console.log(exists()) // false
+console.log(exists(undefined)) // false
+console.log(exists(null)) // false
+console.log(exists({})) // true
+console.log(exists(0)) // true
+console.log(exists('Hello')) // true
 
 // existsAny
 console.log(existsAny(null, undefined)) // false
