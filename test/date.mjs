@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 	
 import { assert } from 'chai'
-import { addSeconds, addMinutes, addHours, addDays, addMonths, addYears, formatDate } from '../src/date.mjs'
+import { addSeconds, addMinutes, addHours, addDays, addMonths, addYears, formatDate, getTimeDiff } from '../src/date.mjs'
 
 describe('date', () => {
 	describe('.addSeconds', () => {
@@ -64,6 +64,91 @@ describe('date', () => {
 			assert.equal(formatDate(refDate, { format:'dd/MM/yy HH:mm:ss' }), '12/10/21 13:45:21')
 			assert.equal(formatDate(refDate, { format:'The dd of MMM, yyyy' }), 'The 12 of October, 2021')
 			assert.equal(formatDate(refDate, { format:'The dd{nth} of MMM, yyyy' }), 'The 12th of October, 2021')
+		})
+	})
+	describe('.getTimeDiff', () => {
+		it('01 - Should get the time difference between two dates in ms', () => {
+			const date01 = new Date('2021-10-12')
+			const date02 = new Date(date01.getTime()+1000)
+			assert.equal(getTimeDiff(date01, date02), 1000)
+		})
+		it('02 - Should not be impacted by the arguments\' order', () => {
+			const date01 = new Date('2021-10-12')
+			const date02 = new Date(date01.getTime()+1000)
+			assert.equal(getTimeDiff(date02, date01), 1000)
+		})
+		it('03 - Should support date string', () => {
+			const date01 = new Date('2021-10-12')
+			const date02 = new Date(date01.getTime()+1000)
+			assert.equal(getTimeDiff(date01, date02.toISOString()), 1000)
+		})
+		it('04 - Should support date number', () => {
+			const date01 = new Date('2021-10-12')
+			const date02 = new Date(date01.getTime()+1000)
+			assert.equal(getTimeDiff(date01, date02.getTime()), 1000)
+		})
+		it('05 - Should support explicit \'ms\' unit', () => {
+			const date01 = new Date('2021-10-12')
+			const date02 = new Date(date01.getTime()+1000)
+			assert.equal(getTimeDiff(date01, date02, 'ms'), 1000)
+			assert.equal(getTimeDiff(date01, date02, 'millisecond'), 1000)
+		})
+		it('06 - Should support explicit \'second\' unit', () => {
+			const UNIT_VAL = 4
+			const MS_VAL = UNIT_VAL*1000
+			const date01 = new Date('2021-10-12')
+			const date02 = new Date(date01.getTime()+MS_VAL)
+			assert.equal(getTimeDiff(date01, date02, 's'), UNIT_VAL)
+			assert.equal(getTimeDiff(date01, date02, 'sec'), UNIT_VAL)
+			assert.equal(getTimeDiff(date01, date02, 'second'), UNIT_VAL)
+		})
+		it('07 - Should support explicit \'minute\' unit', () => {
+			const UNIT_VAL = 4
+			const MS_VAL = UNIT_VAL*1000*60
+			const date01 = new Date('2021-10-12')
+			const date02 = new Date(date01.getTime()+MS_VAL)
+			assert.equal(getTimeDiff(date01, date02, 'm'), UNIT_VAL)
+			assert.equal(getTimeDiff(date01, date02, 'min'), UNIT_VAL)
+			assert.equal(getTimeDiff(date01, date02, 'minute'), UNIT_VAL)
+		})
+		it('08 - Should support explicit \'hour\' unit', () => {
+			const UNIT_VAL = 4
+			const MS_VAL = UNIT_VAL*1000*60*60
+			const date01 = new Date('2021-10-12')
+			const date02 = new Date(date01.getTime()+MS_VAL)
+			assert.equal(getTimeDiff(date01, date02, 'h'), UNIT_VAL)
+			assert.equal(getTimeDiff(date01, date02, 'hour'), UNIT_VAL)
+		})
+		it('09 - Should support explicit \'day\' unit', () => {
+			const UNIT_VAL = 4
+			const MS_VAL = UNIT_VAL*1000*60*60*24
+			const date01 = new Date('2021-10-12')
+			const date02 = new Date(date01.getTime()+MS_VAL)
+			assert.equal(getTimeDiff(date01, date02, 'd'), UNIT_VAL)
+			assert.equal(getTimeDiff(date01, date02, 'day'), UNIT_VAL)
+		})
+		it('10 - Should support explicit \'week\' unit', () => {
+			const UNIT_VAL = 4
+			const MS_VAL = UNIT_VAL*1000*60*60*24*7
+			const date01 = new Date('2021-10-12')
+			const date02 = new Date(date01.getTime()+MS_VAL)
+			assert.equal(getTimeDiff(date01, date02, 'w'), UNIT_VAL)
+			assert.equal(getTimeDiff(date01, date02, 'week'), UNIT_VAL)
+		})
+		it('11 - Should support explicit \'month\' unit', () => {
+			const UNIT_VAL = 4
+			const MS_VAL = UNIT_VAL*1000*60*60*24*30.41
+			const date01 = new Date('2021-10-12')
+			const date02 = new Date(date01.getTime()+MS_VAL)
+			assert.equal(getTimeDiff(date01, date02, 'month'), UNIT_VAL)
+		})
+		it('12 - Should support explicit \'month\' unit', () => {
+			const UNIT_VAL = 4
+			const MS_VAL = UNIT_VAL*1000*60*60*24*365
+			const date01 = new Date('2021-10-12')
+			const date02 = new Date(date01.getTime()+MS_VAL)
+			assert.equal(getTimeDiff(date01, date02, 'y'), UNIT_VAL)
+			assert.equal(getTimeDiff(date01, date02, 'year'), UNIT_VAL)
 		})
 	})
 })

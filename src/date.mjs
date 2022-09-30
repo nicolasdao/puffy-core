@@ -116,6 +116,46 @@ export const formatDate = (date, options={}) => {
 		.replace('{nth}', nth)
 }
 
+/**
+ * Gets the ellapsed time between two dates.
+ * 
+ * @param  {Date|String|Number}	date01	
+ * @param  {Date|String|Number}	date02	
+ * @param  {String}				unit		Default 'ms'. Valid units: 'ms', 'millisecond', 'sec', 's', 'second', 'm', 'min', 'minute', 'h', 'hour', 'd', 'day', 'w', 'week', 'm', 'month', 'y', 'year'
+ * @return {[type]}        [description]
+ */
+export const getTimeDiff = (date01, date02, unit='ms') => {
+	const d1 = new Date(date01)
+	const d2 = new Date(date02)
+	if (isNaN(d1))
+		throw new Error(`date01 (${date01}) is not a valid date`)
+	if (isNaN(d2))
+		throw new Error(`date02 (${date02}) is not a valid date`)
+
+	const diff = Math.abs(d1.getTime() - d2.getTime())
+	const u = `${unit}`.toLowerCase().trim()
+	if (u == 'ms' || u == 'millisecond')
+		return diff
+	else if (u == 's' || u == 'sec' || u == 'second')
+		return diff/1000
+	else if (u == 'm' || u == 'min' || u == 'minute')
+		return diff/1000/60
+	else if (u == 'h' || u == 'hour')
+		return diff/1000/60/60
+	else if (u == 'd' || u == 'day')
+		return diff/1000/60/60/24
+	else if (u == 'w' || u == 'week')
+		return diff/1000/60/60/24/7
+	else if (u == 'month')
+		return diff/1000/60/60/24/30.41
+	else if (u == 'y' || u == 'year')
+		return diff/1000/60/60/24/365
+	else
+		throw new Error(`unit '${unit}' is not supported`)
+}
+
+
+
 
 
 

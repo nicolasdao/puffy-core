@@ -162,25 +162,25 @@ const data = jwtDecode('YOUR JWT TOKEN HERE', { noFail:true }) // The 'noFail' o
 > CommonJS API: `const { date } = require('puffy-core')`
 
 ```js
-import { addSeconds, addMinutes, addHours, addDays, addMonths, addYears, formatDate } from 'puffy-core/date'
+import { addSeconds, addMinutes, addHours, addDays, addMonths, addYears, formatDate, getTimeDiff } from 'puffy-core/date'
 
 // addSeconds
-console.log(addSeconds(new Date()))
+console.log(addSeconds(new Date(), 30))
 
 // addMinutes
-console.log(addMinutes(new Date()))
+console.log(addMinutes(new Date(), 65))
 
 // addHours
-console.log(addHours(new Date()))
+console.log(addHours(new Date(), 3))
 
 // addDays
-console.log(addDays(new Date()))
+console.log(addDays(new Date(), 4))
 
 // addMonths
-console.log(addMonths(new Date()))
+console.log(addMonths(new Date(), 3))
 
 // addYears
-console.log(addYears(new Date()))
+console.log(addYears(new Date(), -10))
 
 // formatDate
 const refDate = new Date('2021-10-12T13:45:21')
@@ -193,6 +193,25 @@ console.log(formatDate(refDate, { format:'dd/MM/yy HH:mm:ss' })) // '12/10/21 13
 console.log(formatDate(refDate, { format:'dd/MM/yy HH:mm:ss', utc:true })) // '12/10/21 03:45:21'
 console.log(formatDate(refDate, { format:'The dd of MMM, yyyy' })) // 'The 12 of October, 2021'
 console.log(formatDate(refDate, { format:'The dd{nth} of MMM, yyyy' })) // 'The 12th of October, 2021'
+
+// getTimeDiff (default unit is millisecond)
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09')))				// 10548540000
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'ms'))			// 10548540000
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'millisecond'))	// 10548540000
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 's'))			// 10548540
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'sec'))			// 10548540
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'second'))		// 10548540
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'm'))			// 175809
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'minute'))		// 175809
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'h'))			// 2930.15
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'hour'))		// 2930.15
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'd'))			// 122.08958333333334
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'day'))			// 122.08958333333334
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'w'))			// 17.441369047619048
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'week'))		// 17.441369047619048
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'month'))		// 4.0147840622602216
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'y'))			// 0.3344920091324201
+console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'year'))		// 0.3344920091324201
 ```
 
 ## `error`
