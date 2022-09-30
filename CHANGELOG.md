@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.6.0](https://github.com/nicolasdao/puffy-core/compare/v0.5.10...v0.6.0) (2022-09-30)
+
+
+### Features
+
+* date - Add support for calculating the time difference between two dates ([9590747](https://github.com/nicolasdao/puffy-core/commit/9590747a4f86c72c0600766150b21a86e5b262ee))
+
 ### [0.5.10](https://github.com/nicolasdao/puffy-core/compare/v0.5.9...v0.5.10) (2022-07-25)
 
 ### [0.5.9](https://github.com/nicolasdao/puffy-core/compare/v0.5.8...v0.5.9) (2022-06-22)
