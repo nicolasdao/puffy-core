@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.7.0](https://github.com/nicolasdao/puffy-core/compare/v0.6.0...v0.7.0) (2022-12-25)
+
+
+### Features
+
+* error module - Add support for plain async function + wrapper message to catch all errors in case of uncaught error ([9f35516](https://github.com/nicolasdao/puffy-core/commit/9f355169cea5799082adcd62934159766361a153))
+
 ## [0.6.0](https://github.com/nicolasdao/puffy-core/compare/v0.5.10...v0.6.0) (2022-09-30)
 
 
