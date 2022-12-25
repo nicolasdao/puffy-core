@@ -220,6 +220,14 @@ console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'year'))		//
 
 This API uses a functional approach to handling errors. Instead of throwing errors, errors are accumulated. It is up to the software engineer to manage what to do with them. The Errors are accumulated in the inverse order of occurance. This means that the first error is the highest in the stack while the last error is at the bottom of the stack (i.e., the original error that occured in the first place).
 
+Supported signatures:
+- `const [errors, value] = catchErrors(() => console.log('hello'))`
+- `const [errors, value] = await catchErrors(async () => console.log('hello'))`
+- `const [errors, value] = await catchErrors(myRiskyPromise)`
+- `const [errors, value] = catchErrors('Wrapper error message to give more context', () => console.log('hello'))`
+- `const [errors, value] = await catchErrors('Wrapper error message to give more context', async () => console.log('hello'))`
+- `const [errors, value] = await catchErrors('Wrapper error message to give more context', myRiskyPromise)`
+
 ```js
 import { catchErrors, wrapErrors, wrapErrorsFn, wrapCustomErrors, mergeErrors, getErrorMetadata, PuffyResponse } from 'puffy-core/error'
 

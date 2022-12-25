@@ -36,7 +36,6 @@ describe('error', () => {
 			assert.equal(errors02[0].message, 'Should fail', '06')
 		})
 		it('02 - Should never let an error in an asynchrounous function interrupt the program', async () => {
-
 			const robustAsyncFn = (fail) => catchErrors((async () => {
 				await Promise.resolve(null)
 				if (fail)
@@ -56,6 +55,72 @@ describe('error', () => {
 			assert.isNotOk(result02 ,'04')
 			assert.equal(errors02.length, 1, '05')
 			assert.equal(errors02[0].message, 'Should fail', '06')
+		}),
+		it('03 - Should support async function', async () => {
+			const robustAsyncFn = (fail) => catchErrors(async () => {
+				await Promise.resolve(null)
+				if (fail)
+					throw new Error('Should fail')
+				else
+					return 123
+			})
+
+			const [errors01, result01] = await robustAsyncFn()
+
+			assert.isNotOk(errors01, '01')
+			assert.equal(result01, 123 ,'02')
+
+			const [errors02, result02] = await robustAsyncFn(true)
+
+			assert.isOk(errors02, '03')
+			assert.isNotOk(result02 ,'04')
+			assert.equal(errors02.length, 1, '05')
+			assert.equal(errors02[0].message, 'Should fail', '06')
+		}),
+		it.only('04 - Should support wrapping the entire promise into a catch all error', async () => {
+
+			const robustAsyncFn = (fail) => catchErrors('I have caught you damn error', async () => {
+				await Promise.resolve(null)
+				if (fail)
+					throw new Error('Should fail')
+				else
+					return 123
+			})
+
+			const [errors01, result01] = await robustAsyncFn()
+
+			assert.isNotOk(errors01, '01')
+			assert.equal(result01, 123 ,'02')
+
+			const [errors02, result02] = await robustAsyncFn(true)
+
+			assert.isOk(errors02, '03')
+			assert.isNotOk(result02 ,'04')
+			assert.equal(errors02.length, 2, '05')
+			assert.equal(errors02[0].message, 'I have caught you damn error', '06')
+			assert.equal(errors02[1].message, 'Should fail', '07')
+		}),
+		it('05 - Should support wrapping the entire function into a catch all error', () => {
+
+			const robustSyncFn = (fail) => catchErrors('I have caught you damn error', () => {
+				if (fail)
+					throw new Error('Should fail')
+				else
+					return 123
+			})
+
+			const [errors01, result01] = robustSyncFn()
+
+			assert.isNotOk(errors01, '01')
+			assert.equal(result01, 123 ,'02')
+
+			const [errors02, result02] = robustSyncFn(true)
+
+			assert.isOk(errors02, '03')
+			assert.isNotOk(result02 ,'04')
+			assert.equal(errors02.length, 2, '05')
+			assert.equal(errors02[0].message, 'I have caught you damn error', '06')
+			assert.equal(errors02[1].message, 'Should fail', '07')
 		})
 	})
 	describe('.wrapErrors', () => {

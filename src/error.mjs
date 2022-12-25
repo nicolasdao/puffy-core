@@ -33,33 +33,40 @@ export class PuffyResponse extends Array {}
  * @return {Error}				result[0]	Potential error. Null means no error
  * @return {Object}				result[1]	Result
  */
-export const catchErrors = exec => {
+export const catchErrors = (arg01, arg02) => {
+	const [globalErrorMsg, exec] = arg01 && typeof(arg01) == 'string' ? [arg01, arg02] : [null, arg01]
 	if (!exec)
 		try {
 			throw new Error('Missing required argument \'exec\'.')
 		} catch (err) {
-			return _formatErrors(err)
+			return _formatErrors(err, globalErrorMsg)
 		} 
 
 	if (exec.then && typeof(exec.then) == 'function')
 		return exec
 			.then(data => new PuffyResponse(null, data))
-			.catch(_formatErrors)
+			.catch(err => _formatErrors(err, globalErrorMsg))
 
 	const t = typeof(exec)
 	if (t == 'function') {
 		try {
-			const data = exec()
-			return new PuffyResponse(null, data)
+			if (exec.constructor.name == 'AsyncFunction')
+				return exec()
+					.then(data => new PuffyResponse(null, data))
+					.catch(err => _formatErrors(err, globalErrorMsg))
+			else {
+				const data = exec()
+				return new PuffyResponse(null, data)
+			}
 		} catch (err) {
-			return _formatErrors(err)
+			return _formatErrors(err, globalErrorMsg)
 		}
 	}
 
 	try {
 		throw new Error(`Invalid argument exception. Function 'catchErrors' expects a single argument of type 'Function' or 'Promise'. Found '${t}' instead.`)
 	} catch (err) {
-		return _formatErrors(err)
+		return _formatErrors(err, globalErrorMsg)
 	}
 }
 
@@ -234,16 +241,23 @@ const _parseToErrors = e => {
  * @param  {Error}			err
  * @param  {[Error]}			.errors
  * @param  {Object}				.__data
+ * @param  {String}			globalErrorMsg		Optional error message that wraps all the others 
  * 
  * @return {PuffyResponse}	puffyResponse
  */
-const _formatErrors = err => {
+const _formatErrors = (err, globalErrorMsg) => {
 	if (err && err.errors && err.errors[0]) {
-		const errors = [err, ...err.errors]
+		const errors = globalErrorMsg 
+			? [new Error(globalErrorMsg), err, ...err.errors] 
+			: [err, ...err.errors]
 		err.errors = null
 		return new PuffyResponse(errors, (err||{}).__data||null)
-	} else
-		return new PuffyResponse([err], (err||{}).__data||null) 
+	} else {
+		const errors = globalErrorMsg
+			? [new Error(globalErrorMsg), err]
+			: [err]
+		return new PuffyResponse(errors, (err||{}).__data||null) 
+	}
 }
 
 
