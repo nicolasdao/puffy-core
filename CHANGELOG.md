@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.7.2](https://github.com/nicolasdao/puffy-core/compare/v0.7.1...v0.7.2) (2023-01-09)
+
+
+### Bug Fixes
+
+* The standard deviation returns NaN when the items are equals and too small ([3ebc1fd](https://github.com/nicolasdao/puffy-core/commit/3ebc1fdad6bdbd4fc62ae73d4d8c619b09d6ee9f))
+
 ### [0.7.1](https://github.com/nicolasdao/puffy-core/compare/v0.7.0...v0.7.1) (2022-12-25)
 
 
