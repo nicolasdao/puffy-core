@@ -47,7 +47,8 @@ export const stdDev = (arr=[], fn) => {
 	}, { result:0, resultSquare:0 })
 
 	const l = arr.length
-	return Math.sqrt((resultSquare/l) - Math.pow((result/l), 2))
+	const variance = (resultSquare/l) - Math.pow((result/l), 2)
+	return variance < 0 ? 0 : Math.sqrt(variance)
 }
 
 /**

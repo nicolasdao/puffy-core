@@ -77,7 +77,7 @@ describe('error', () => {
 			assert.equal(errors02.length, 1, '05')
 			assert.equal(errors02[0].message, 'Should fail', '06')
 		}),
-		it.only('04 - Should support wrapping the entire promise into a catch all error', async () => {
+		it('04 - Should support wrapping the entire promise into a catch all error', async () => {
 
 			const robustAsyncFn = (fail) => catchErrors('I have caught you damn error', async () => {
 				await Promise.resolve(null)

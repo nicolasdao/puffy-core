@@ -24,7 +24,7 @@ describe('math', () => {
 	})
 	describe('.stdDev', () => {
 		it('01 - Should calculate the standard deviation of an array of numbers.', () => {
-			assert.equal(stdDev([5,5,5,5,5]), 0)
+			assert.equal(stdDev([0.006221142162818917, 0.006221142162818917, 0.006221142162818917, 0.006221142162818917, 0.006221142162818917, 0.006221142162818917]), 0)
 			assert.equal(stdDev([1,2,3,4]), 1.118033988749895)
 		})
 		it('02 - Should calculate the standard deviation of an array of object when an identity function is specified.', () => {
