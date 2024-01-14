@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.0.0](https://github.com/nicolasdao/puffy-core/compare/v0.7.2...v1.0.0) (2024-01-14)
+
+
+### Features
+
+* Add support for formatting dates using different time zones ([5c47324](https://github.com/nicolasdao/puffy-core/commit/5c4732495c45d53a3e910187cf327eea466affcf))
+
 ### [0.7.2](https://github.com/nicolasdao/puffy-core/compare/v0.7.1...v0.7.2) (2023-01-09)
 
 
