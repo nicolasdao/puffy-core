@@ -55,7 +55,7 @@ describe('date', () => {
 			assert.equal(formatDate(refDate), '2021-10-12')
 		})
 		it('02 - Should support short date format', () => {
-			const refDate = new Date('2021-10-12T13:45:21')
+			const refDate = new Date('2021-10-12T13:45:21Z')
 			assert.equal(formatDate(refDate), '2021-10-12')
 			assert.equal(formatDate(refDate, { format:'dd-MM-yyyy' }), '12-10-2021')
 			assert.equal(formatDate(refDate, { format:'ddMMyyyy' }), '12102021')
@@ -64,6 +64,17 @@ describe('date', () => {
 			assert.equal(formatDate(refDate, { format:'dd/MM/yy HH:mm:ss' }), '12/10/21 13:45:21')
 			assert.equal(formatDate(refDate, { format:'The dd of MMM, yyyy' }), 'The 12 of October, 2021')
 			assert.equal(formatDate(refDate, { format:'The dd{nth} of MMM, yyyy' }), 'The 12th of October, 2021')
+		})
+		it('03 - Should support time zones', () => {
+			const refDate = new Date('2021-10-12T13:45:21Z')
+			assert.equal(formatDate(refDate, { tz:'Australia/Sydney' }), '2021-10-13')
+			assert.equal(formatDate(refDate, { format:'dd-MM-yyyy', tz:'Australia/Sydney' }), '13-10-2021')
+			assert.equal(formatDate(refDate, { format:'ddMMyyyy', tz:'Australia/Sydney' }), '13102021')
+			assert.equal(formatDate(refDate, { format:'MMyy', tz:'Australia/Sydney' }), '1021')
+			assert.equal(formatDate(refDate, { format:'dd/MM/yy', tz:'Australia/Sydney' }), '13/10/21')
+			assert.equal(formatDate(refDate, { format:'dd/MM/yy HH:mm:ss', tz:'Australia/Sydney' }), '13/10/21 00:45:21')
+			assert.equal(formatDate(refDate, { format:'The dd of MMM, yyyy', tz:'Australia/Sydney' }), 'The 13 of October, 2021')
+			assert.equal(formatDate(refDate, { format:'The dd{nth} of MMM, yyyy', tz:'Australia/Sydney' }), 'The 13th of October, 2021')
 		})
 	})
 	describe('.getTimeDiff', () => {

@@ -64,12 +64,29 @@ export const addSeconds = (d, v=0) => {
 	return t
 }
 
+const timezone_date = (date, tz) => {
+	const tz_date_string = new Intl.DateTimeFormat('en-GB',{ 
+		timeZone:tz, 
+		year: 'numeric',
+		month: '2-digit',
+		day: '2-digit',
+		hour: '2-digit',
+		minute: '2-digit',
+		second: '2-digit',
+		hour12: false 
+	}).format(date)
+
+	const [,day,month,year,hour,min,sec] = tz_date_string.match(/^([0-9]{2})\/([0-9]{2})\/([0-9]{4}),\s([0-9]{2}):([0-9]{2}):([0-9]{2})/)
+	return new Date(`${year}-${month}-${day}T${hour}:${min}:${sec}Z`)
+}
+
 /**
  * Convert a date into a specific short date string format
  * 
- * @param  {Date} 	 date    			e.g., 2018-11-22T00:00:00.000Z
- * @param  {Object}  options.format 	Default 'yyyy-MM-dd'
- * @param  {Boolean} options.utc 		Default false
+ * @param	{Date}		date			e.g., 2018-11-22T00:00:00.000Z
+ * @param	{Object}	options.format	Default 'yyyy-MM-dd'
+ * @param	{String}	options.tz		Default 'utc'. Valid values: 'utc', 'UTC', 'local', 'Australia/Sydney' ... IANA codes (https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+ * 
  * @return {String}         			e.g., 2018-11-22
  */
 export const formatDate = (date, options={}) => {
@@ -80,17 +97,24 @@ export const formatDate = (date, options={}) => {
 	if (isNaN(d))
 		throw new Error(`'${date}' is not a valid date`)
 
-	const useUTC = options && options.utc
+	const { format='yyyy-MM-dd', tz } = options || {}
+	const use_utc = !tz || tz == 'utc' || tz == 'UTC'
+	const use_local = tz == 'local'
+	let use_tz = use_utc
+	if (!use_utc && !use_local) {
+		use_tz = true
+		d = timezone_date(d, tz)
+	}
 
-	const year = useUTC ? d.getUTCFullYear() : d.getFullYear()
-	const year2digits = `${year}`.substring(2,4)
-	let month = (useUTC ? d.getUTCMonth() : d.getMonth()) + 1
-	const monthName = MONTH_NAMES[month-1]
-	let day = useUTC ? d.getUTCDate() : d.getDate()
-	const nth = NTH_DAY[day] || 'th'
-	let hours = useUTC ? d.getUTCHours() : d.getHours()
-	let minutes = useUTC ? d.getUTCMinutes() : d.getMinutes()
-	let seconds = useUTC ? d.getUTCSeconds() : d.getSeconds()
+	let year = use_tz ? d.getUTCFullYear() : d.getFullYear()
+	let year2digits = `${year}`.substring(2,4)
+	let month = (use_tz ? d.getUTCMonth() : d.getMonth()) + 1
+	let monthName = MONTH_NAMES[month-1]
+	let day = use_tz ? d.getUTCDate() : d.getDate()
+	let nth = NTH_DAY[day] || 'th'
+	let hours = use_tz ? d.getUTCHours() : d.getHours()
+	let minutes = use_tz ? d.getUTCMinutes() : d.getMinutes()
+	let seconds = use_tz ? d.getUTCSeconds() : d.getSeconds()
 
 	if (month < 10)
 		month = `0${month}`
@@ -103,7 +127,6 @@ export const formatDate = (date, options={}) => {
 	if (seconds < 10)
 		seconds = `0${seconds}`
 
-	const format = (options || {}).format || 'yyyy-MM-dd'
 	return format
 		.replace('yyyy', year)
 		.replace('MMM', monthName)

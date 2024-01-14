@@ -183,7 +183,7 @@ console.log(addMonths(new Date(), 3))
 console.log(addYears(new Date(), -10))
 
 // formatDate
-const refDate = new Date('2021-10-12T13:45:21')
+const refDate = new Date('2021-10-12T13:45:21Z')
 console.log(formatDate(refDate)) // '2021-10-12'
 console.log(formatDate(refDate, { format:'dd-MM-yyyy' })) // '12-10-2021'
 console.log(formatDate(refDate, { format:'ddMMyyyy' })) // '12102021'
@@ -193,6 +193,10 @@ console.log(formatDate(refDate, { format:'dd/MM/yy HH:mm:ss' })) // '12/10/21 13
 console.log(formatDate(refDate, { format:'dd/MM/yy HH:mm:ss', utc:true })) // '12/10/21 03:45:21'
 console.log(formatDate(refDate, { format:'The dd of MMM, yyyy' })) // 'The 12 of October, 2021'
 console.log(formatDate(refDate, { format:'The dd{nth} of MMM, yyyy' })) // 'The 12th of October, 2021'
+
+// formatDate with time zone (full list of time zones at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
+console.log(formatDate(refDate, { format:'dd/MM/yy HH:mm:ss', tz:'Australia/Sydney' })) // '13/10/21 00:45:21'
+console.log(formatDate(refDate, { format:'dd/MM/yy HH:mm:ss', tz:'local' })) // '12/10/21 21:45:21'
 
 // getTimeDiff (default unit is millisecond)
 console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09')))				// 10548540000
