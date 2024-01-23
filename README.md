@@ -162,7 +162,7 @@ const data = jwtDecode('YOUR JWT TOKEN HERE', { noFail:true }) // The 'noFail' o
 > CommonJS API: `const { date } = require('puffy-core')`
 
 ```js
-import { addSeconds, addMinutes, addHours, addDays, addMonths, addYears, formatDate, getTimeDiff } from 'puffy-core/date'
+import { addSeconds, addMinutes, addHours, addDays, addMonths, addYears, formatDate, getTimeDiff, toTz } from 'puffy-core/date'
 
 // addSeconds
 console.log(addSeconds(new Date(), 30))
@@ -197,6 +197,13 @@ console.log(formatDate(refDate, { format:'The dd{nth} of MMM, yyyy' })) // 'The 
 // formatDate with time zone (full list of time zones at https://en.wikipedia.org/wiki/List_of_tz_database_time_zones)
 console.log(formatDate(refDate, { format:'dd/MM/yy HH:mm:ss', tz:'Australia/Sydney' })) // '13/10/21 00:45:21'
 console.log(formatDate(refDate, { format:'dd/MM/yy HH:mm:ss', tz:'local' })) // '12/10/21 21:45:21'
+
+// Converts a UTC date into another UTC date shifted as if it was in a specific timezone.
+const refDate2 = new Date('2024-01-23T09:42:57.311Z')
+console.log(toTz(refDate2).toISOString())	// '2024-01-23T09:42:57.311Z'
+console.log(toTz(refDate2,'local').toISOString())	// '2024-01-23T17:42:57.311Z'
+console.log(toTz(refDate2,'Australia/Sydney').toISOString())	// '2024-01-23T20:42:57.311Z'
+console.log(toTz(refDate2,'America/Chicago').toISOString())	// '2024-01-23T03:42:57.311Z'
 
 // getTimeDiff (default unit is millisecond)
 console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09')))				// 10548540000

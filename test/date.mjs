@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 	
 import { assert } from 'chai'
-import { addSeconds, addMinutes, addHours, addDays, addMonths, addYears, formatDate, getTimeDiff } from '../src/date.mjs'
+import { addSeconds, addMinutes, addHours, addDays, addMonths, addYears, formatDate, getTimeDiff, toTz } from '../src/date.mjs'
 
 describe('date', () => {
 	describe('.addSeconds', () => {
@@ -75,6 +75,15 @@ describe('date', () => {
 			assert.equal(formatDate(refDate, { format:'dd/MM/yy HH:mm:ss', tz:'Australia/Sydney' }), '13/10/21 00:45:21')
 			assert.equal(formatDate(refDate, { format:'The dd of MMM, yyyy', tz:'Australia/Sydney' }), 'The 13 of October, 2021')
 			assert.equal(formatDate(refDate, { format:'The dd{nth} of MMM, yyyy', tz:'Australia/Sydney' }), 'The 13th of October, 2021')
+		})
+	})
+	describe('.toTz', () => {
+		it('01 - Should create a UTC date that looks like the time in a specific timezone', () => {
+			const refDate = new Date('2024-01-23T09:42:57.311Z')
+			assert.equal(toTz(refDate).toISOString(), '2024-01-23T09:42:57.311Z')
+			assert.equal(toTz(refDate,'local').toISOString(), '2024-01-23T17:42:57.311Z')
+			assert.equal(toTz(refDate,'Australia/Sydney').toISOString(), '2024-01-23T20:42:57.311Z')
+			assert.equal(toTz(refDate,'America/Chicago').toISOString(), '2024-01-23T03:42:57.311Z')
 		})
 	})
 	describe('.getTimeDiff', () => {

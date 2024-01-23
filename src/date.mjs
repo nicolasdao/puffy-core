@@ -76,8 +76,36 @@ const timezone_date = (date, tz) => {
 		hour12: false 
 	}).format(date)
 
+	const ms = date.getUTCMilliseconds()
+
 	const [,day,month,year,hour,min,sec] = tz_date_string.match(/^([0-9]{2})\/([0-9]{2})\/([0-9]{4}),\s([0-9]{2}):([0-9]{2}):([0-9]{2})/)
-	return new Date(`${year}-${month}-${day}T${hour}:${min}:${sec}Z`)
+	return new Date(`${year}-${month}-${day}T${hour}:${min}:${sec}.${ms}Z`)
+}
+
+const add_zero = val => val < 10 ? `0${val}` : val
+const add_double_zero = val => val < 10 ? `00${val}` : val < 100 ? `0${val}` : val
+
+export const toTz = (date, tz) => {
+	if (!date)
+		return null
+
+	let d = date instanceof Date ? date : new Date(date)
+	if (isNaN(d))
+		throw new Error(`'${date}' is not a valid date`)
+
+	if (!tz || tz == 'utc' || tz == 'UTC')
+		return d
+	else if (tz == 'local') {
+		const year = d.getFullYear()
+		const month = add_zero(d.getMonth() + 1)
+		const day = add_zero(d.getDate())
+		const hours = add_zero(d.getHours())
+		const minutes = add_zero(d.getMinutes())
+		const seconds = add_zero(d.getSeconds())
+		const milliseconds = add_double_zero(d.getMilliseconds())
+		return new Date(`${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`)
+	} else
+		return timezone_date(d,tz)
 }
 
 /**
