@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.1.0](https://github.com/nicolasdao/puffy-core/compare/v1.0.0...v1.1.0) (2024-01-23)
+
+
+### Features
+
+* Add support for date.toTz ([6f40927](https://github.com/nicolasdao/puffy-core/commit/6f40927ad5610bcfb12e0d975316a36c1ea471e5))
+
 ## [1.0.0](https://github.com/nicolasdao/puffy-core/compare/v0.7.2...v1.0.0) (2024-01-14)
 
 
