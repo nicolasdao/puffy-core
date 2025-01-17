@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.2.0](https://github.com/nicolasdao/puffy-core/compare/v1.1.0...v1.2.0) (2025-01-17)
+
+
+### Features
+
+* Add suppor for creating database PK and log ([f4e6d5f](https://github.com/nicolasdao/puffy-core/commit/f4e6d5f52d5d009d949670f5279081215c68a6c5))
+
 ## [1.1.0](https://github.com/nicolasdao/puffy-core/compare/v1.0.0...v1.1.0) (2024-01-23)
 
 
