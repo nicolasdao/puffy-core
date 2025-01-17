@@ -1,7 +1,25 @@
 import { chainAsync, chainSync } from 'puffy-core/func'
 import { catchErrors } from 'puffy-core/error'
+import { newId } from 'puffy-core/db'
+import { log } from 'puffy-core/logger'
 
 const main = async () => {
+	console.log(Date.now())
+	console.log(newId()) // 1737111832148007184n
+	console.log(newId({ node:18 })) // 1737111832148007184n
+	console.log(newId({ node:18, idx:9999 })) // 1737111832148007184n
+	console.log(newId({ timestamp:new Date('1985-03-21') })) // 1737111832148007184n
+
+	log({
+		level:'INFO',
+		code:'12343',
+		message:'Hello world',
+		data:{
+			hello:'world'
+		},
+		errors:['Oh shit',new Error('Damn!')]
+	})
+
 	const [errors01, data01] = await chainAsync(
 		() => Promise.resolve(1),								// 1
 		previous => Promise.resolve(previous+1),				// 2

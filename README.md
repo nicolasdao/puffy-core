@@ -15,10 +15,12 @@ npm i puffy-core
 >	- [`converter`](#converter)
 >	- [`crypto`](#crypto)
 >	- [`date`](#date)
+>	- [`db`](#db)
 >	- [`error`](#error)
 >		- [Quick start](#error-api---quick-start)
 >		- [Adding a response even when an error is thrown](#adding-a-response-even-when-an-error-is-thrown)
 >	- [`func`](#func)
+>	- [`logger`](#logger)
 >	- [`math`](#math)
 >	- [`obj`](#obj)
 >	- [`string`](#string)
@@ -225,6 +227,26 @@ console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'y'))			// 0
 console.log(getTimeDiff('2021-08-12', new Date('2021-12-12T13:09'), 'year'))		// 0.3344920091324201
 ```
 
+## `db`
+
+> CommonJS API: `const { db } = require('puffy-core')`
+
+`newId` is an API the returns a `BigInt` that can be used as a primary key in any database. The advantage of that value is that it is random and grows monotonically with time. This is a great attribute of a primary key that can then be used to sort by creation time. The break down is as follow:
+
+`1737111960607002926 -> 1737111960607 00 2926`, where:
+- `1737111960607`. By default this is the current epoch in milliseconds. This can be set via the `timestamp` option.
+- `00` is the `node`. By default, that value is `00`. This can be set up to 99 via the `node` option.
+- `2926` is the `index aka idx`. By default, it is another random value ranging from `0` to `9999`. It can be manually set via the `idx` option.
+
+```js
+import { newId } from 'puffy-core/db'
+
+console.log(newId()) 									// 1737111960607002926n -> 1737111960607 00 2926n
+console.log(newId({ node:18 })) 						// 1737111960611181693n -> 1737111960611 18 1693n
+console.log(newId({ node:18, idx:9999 })) 				// 1737111960611189999n -> 1737111960611 18 9999n
+console.log(newId({ timestamp:new Date('1985-03-21') }))//  480211200000003307n ->  480211200000 00 3307n
+```
+
 ## `error`
 ### `error` API - Quick start
 > CommonJS API: `const { error } = require('puffy-core')`
@@ -405,6 +427,28 @@ const main = async () => {
 main()
 ```
 
+## `logger`
+
+> CommonJS API: `const { logger } = require('puffy-core')`
+
+```js
+import { log } from 'puffy-core/logger'
+
+log({
+	level:'INFO', // 'WARN', 'ERROR', 'CRITICAL'
+	code:'12343',
+	message:'Hello world',
+	data:{
+		hello:'world'
+	},
+	errors:['Oh shit',new Error('Damn!')]
+})
+```
+
+```js
+{"level":"INFO","test":false,"message":"Hello world","code":"12343","data":{"hello":"world"},"errors":[{"message":"Oh shit","stack":""},{"message":"Damn!","stack":"Error: Damn!\n    at main (file:///Users/nicolasdao/Documents/projects/puffy/puffy-core/index.mjs:20:21)\n    at file:///Users/nicolasdao/Documents/projects/puffy/puffy-core/index.mjs:65:1\n    at ModuleJob.run (node:internal/modules/esm/module_job:198:25)\n    at async Promise.all (index 0)\n    at async ESMLoader.import (node:internal/modules/esm/loader:409:24)\n    at async loadESM (node:internal/process/esm_loader:85:5)\n    at async handleMainPromise (node:internal/modules/run_main:61:12)"}]}
+```
+
 ## `math`
 
 > CommonJS API: `const { math } = require('puffy-core')`
@@ -516,7 +560,9 @@ console.log(isEmpty({ hello:'world' })) // false
 > CommonJS API: `const { string } = require('puffy-core')`
 
 ```js
-import { plural, justifyLeft } from 'puffy-core/string'
+import { plural, justifyLeft, safeStringify } from 'puffy-core/string'
+
+// safeStringify. Same as JSON.stringify but can deal with BigInt
 
 // plural
 console.log(plural(1, 'cat')) // cat

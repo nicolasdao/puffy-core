@@ -8,7 +8,9 @@
 
 /*
 API:
+	- justifyLeft
 	- plural
+	- safeStringify
 */
 
 const SPECIAL_PLURAL = { 
@@ -105,6 +107,14 @@ export const justifyLeft = (text, options) => {
 		return bits.map(replaceFn).join('\n')
 }
 
-
+const _void = () => null
+export const safeStringify = (obj, indentation) => {
+	try {
+		return JSON.stringify(obj, (_, v) => typeof(v) == 'bigint' ? v.toString() : v, indentation)
+	} catch(err) {
+		_void(err)
+		return JSON.stringify(obj, indentation)
+	}
+}
 
 
