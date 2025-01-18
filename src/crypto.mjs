@@ -10,6 +10,7 @@
 API:
 	- encoder
 	- jwtDecode
+	- jwt_decode
 */
 
 const ATOB = (typeof(window) !== 'undefined' && window.atob) ? window.atob : null
@@ -295,6 +296,6 @@ const _browserHexToBase64 = hexstring => BTOA(((hexstring||'').match(/\w{2}/g)||
 	.join(''))
 
 
-
+export const jwt_decode = jwtDecode
 
 

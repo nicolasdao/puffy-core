@@ -9,11 +9,14 @@
 /*
 API:
 	- avg
-	- stdDev
-	- median
+	- get_random_number
+	- get_random_numbers
 	- getRandomNumber
 	- getRandomNumbers
+	- median
 	- percentile
+	- std_dev
+	- stdDev
 */
 
 /**
@@ -153,3 +156,11 @@ export const getRandomNumbers = options => {
 }
 
 const _seed = (size=0) => Array.apply(null, Array(size))
+
+export const std_dev = stdDev
+export const get_random_number = getRandomNumber
+export const get_random_numbers = getRandomNumbers
+
+
+
+

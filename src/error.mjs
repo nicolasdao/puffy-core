@@ -8,10 +8,17 @@
 
 /*
 API:
+	- catch_errors
 	- catchErrors
+	- get_error_metadata
 	- getErrorMetadata
+	- merge_errors
 	- mergeErrors
-	- PuffyResponse
+	- required
+	- required
+	- wrap_custom_errors
+	- wrap_errors
+	- wrap_errors_fn
 	- wrapCustomErrors
 	- wrapErrors
 	- wrapErrorsFn
@@ -260,6 +267,21 @@ const _formatErrors = (err, globalErrorMsg) => {
 	}
 }
 
+export const required = input => {
+	if (!input)
+		throw wrapErrors('Missing required argument \'input\'')
+	if (typeof(input) == 'object') {
+		for (let key in input) {
+			if (!input[key])
+				throw wrapErrors(`Missing required argument '${key}'`)
+		}
+	}
+}
 
-
+export const catch_errors = catchErrors
+export const get_error_metadata = getErrorMetadata
+export const merge_errors = mergeErrors
+export const wrap_custom_errors = wrapCustomErrors
+export const wrap_errors = wrapErrors
+export const wrap_errors_fn = wrapErrorsFn
 

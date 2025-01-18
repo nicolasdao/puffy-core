@@ -10,16 +10,24 @@
 API:
 	- diff
 	- exists
+	- exists_all
+	- exists_any
 	- existsAll
 	- existsAny
+	- extract_flattened_json
 	- extractFlattenedJSON
+	- get_property
+	- get_type
 	- getProperty
 	- getType
+	- is_empty
+	- is_obj
 	- isEmpty
 	- isObj
 	- merge
 	- mirror
 	- same
+	- set_property
 	- setProperty
 */
 
@@ -363,4 +371,11 @@ const _getPropValue = (obj, prop) => {
 		return obj[prop]
 }
 
-
+export const exists_any = existsAny
+export const exists_all = existsAll
+export const is_empty = isEmpty
+export const is_obj = isObj
+export const get_type = getType
+export const set_property = setProperty
+export const get_property = getProperty
+export const extract_flattened_json = extractFlattenedJSON

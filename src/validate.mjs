@@ -8,11 +8,15 @@
 
 /*
 API:
+	- SPECIAL_CHAR
+	- validate_date
+	- validate_email
+	- validate_special_char
+	- validate_url
 	- validateDate
 	- validateEmail
 	- validateSpecialChar
 	- validateUrl
-	- SPECIAL_CHAR
 */
 
 const SPECIAL_CHAR_REGEX = /[ !"#$%&'()*+,-./:;<=>?@[\]^_`{|}~]/
@@ -33,3 +37,8 @@ export const validateDate = (d, options={ exception: { toggle: false, message: n
 
 
 export const validateSpecialChar = (value='') => SPECIAL_CHAR_REGEX.test(value)
+
+export const validate_url = validateUrl
+export const validate_email = validateEmail
+export const validate_date = validateDate
+export const validate_special_char = validateSpecialChar

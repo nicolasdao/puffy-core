@@ -10,7 +10,7 @@
 // To only run a test, use 'it.only' instead of 'it'.
 					
 import { assert } from 'chai'
-import { catchErrors, wrapErrors, wrapErrorsFn, wrapCustomErrors, mergeErrors, getErrorMetadata } from '../src/error.mjs'
+import { catchErrors, wrapErrors, wrapErrorsFn, wrapCustomErrors, mergeErrors, getErrorMetadata, required } from '../src/error.mjs'
 											
 describe('error', () => {
 	describe('.catchErrors', () => {
@@ -560,6 +560,28 @@ describe('error', () => {
 			assert.isOk(error.stack, '11')
 			assert.isOk(error.stack.indexOf('robustSyncFn failed') >= 0, '12')
 			assert.isOk(error.stack.indexOf('Should fail') >= 0, '13')
+		})
+	})
+	describe('.required', () => {
+		it('01 - Should throw errors when an argument is required but is not defined.', () => {
+			const test_required = ({ hello, world }) => catchErrors('\'test_required\' failed', () => {
+				required({ hello, 'world.hello_again':world?.hello_again })
+
+				console.log('\'test_required\' passed')
+			}) 
+
+			const test_required_01_errors = test_required({ hello:'Hello', world:{hello_again:'hello_again'} })[0]
+			const test_required_02_errors = test_required({})[0]
+			const test_required_03_errors = test_required({ hello:'Hello' })[0]
+			const test_required_04_errors = test_required({ world:{hello_again:'hello_again'} })[0]
+
+			assert.isNotOk(test_required_01_errors, '01')
+			assert.isOk(test_required_02_errors, '02')
+			assert.isOk(test_required_03_errors, '03')
+			assert.isOk(test_required_04_errors, '04')
+			assert.isOk(test_required_02_errors.some(x => x.message == 'Missing required argument \'hello\''), '05')
+			assert.isOk(test_required_03_errors.some(x => x.message == 'Missing required argument \'world.hello_again\''), '06')
+			assert.isOk(test_required_04_errors.some(x => x.message == 'Missing required argument \'hello\''), '07')
 		})
 	})
 })

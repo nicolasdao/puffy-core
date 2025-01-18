@@ -9,14 +9,26 @@
 
 /*
 API:
+	- add_zero
 	- addZero
+	- c2s_case
 	- c2sCase
 	- capital2cCase
+	- capital_2_c_case
+	- nbr_to_currency
 	- nbrToCurrency
+	- object_c_2_s_case
+	- object_capital_2_c_case
+	- object_s_2_c_case
 	- objectC2Scase
 	- objectCapital2Ccase
 	- objectS2Ccase
+	- s2c_case
 	- s2cCase
+	- to_array
+	- to_boolean
+	- to_number
+	- to_obj
 	- toArray
 	- toBoolean
 	- toNumber
@@ -223,3 +235,16 @@ export const toArray  = (val,_default) => {
 		return (() => _default)(e)
 	}
 }
+
+export const nbr_to_currency = nbrToCurrency
+export const s2c_case = s2cCase
+export const c2s_case = c2sCase
+export const capital_2_c_case = capital2cCase
+export const object_c_2_s_case = objectC2Scase
+export const object_s_2_c_case = objectS2Ccase
+export const object_capital_2_c_case = objectCapital2Ccase
+export const add_zero = addZero
+export const to_number = toNumber
+export const to_boolean = toBoolean
+export const to_obj = toObj
+export const to_array = toArray

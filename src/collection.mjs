@@ -10,11 +10,14 @@
 API:
 	- batch
 	- flatten
+	- flatten_uniq
 	- flattenUniq
+	- head_tail
 	- headTail
+	- level_up
 	- levelUp
-	- merge
 	- seed
+	- sort_by
 	- sortBy
 	- uniq
 */
@@ -169,4 +172,7 @@ const _arraySortBy = (arr, fn = x => x, dir='asc') => (arr || []).sort((a,b) => 
 	}
 })
 
-
+export const flatten_uniq = flattenUniq
+export const head_tail = headTail
+export const level_up = levelUp
+export const sort_by = sortBy

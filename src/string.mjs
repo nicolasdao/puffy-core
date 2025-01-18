@@ -8,8 +8,10 @@
 
 /*
 API:
+	- justify_left
 	- justifyLeft
 	- plural
+	- safe_stringify
 	- safeStringify
 */
 
@@ -117,4 +119,5 @@ export const safeStringify = (obj, indentation) => {
 	}
 }
 
-
+export const justify_left = justifyLeft
+export const safe_stringify = safeStringify

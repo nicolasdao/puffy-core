@@ -8,6 +8,7 @@
 
 /*
 API:
+	- get_url_parts
 	- getUrlParts
 */
 
@@ -46,3 +47,5 @@ export const getUrlParts = url => {
 
 	return parts
 }
+
+export const get_url_parts = getUrlParts

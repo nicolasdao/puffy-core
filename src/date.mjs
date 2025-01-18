@@ -8,13 +8,24 @@
 
 /*
 API:
+	- add_days
+	- add_hours
+	- add_minutes
+	- add_months
+	- add_seconds
+	- add_years
 	- addDays
 	- addHours
 	- addMinutes
 	- addMonths
 	- addSeconds
 	- addYears
+	- format_date
 	- formatDate
+	- get_timediff
+	- getTimeDiff
+	- to_tz
+	- toTz
 */
 
 const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
@@ -205,7 +216,15 @@ export const getTimeDiff = (date01, date02, unit='ms') => {
 		throw new Error(`unit '${unit}' is not supported`)
 }
 
-
+export const add_days = addDays
+export const add_months = addMonths
+export const add_years = addYears
+export const add_hours = addHours
+export const add_minutes = addMinutes
+export const add_seconds = addSeconds
+export const to_tz = toTz
+export const format_date = formatDate
+export const get_timediff = getTimeDiff
 
 
 

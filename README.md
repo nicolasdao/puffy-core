@@ -1,6 +1,8 @@
 # PUFFY CORE
 
-> WARNING: Only supported by NodeJS >= 13. To use this package with NodeJS 12, use the `--experimental-modules` flag.
+> __WARNING__: 
+> - Only supported by NodeJS >= 13. To use this package with NodeJS 12, use the `--experimental-modules` flag.
+> - As of version >= 1.3.0 all APIs are also available in snake-case (e.g., `newId()` and `new_id()` are both available).
 
 A collection of ES6 modules with zero-dependencies to help manage common programming tasks in both NodeJS or native JS. This package supports both the `import/export` and `require` APIs via the `exports` and `main` entry points in the `package.json`.
 

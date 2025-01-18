@@ -8,6 +8,8 @@
 
 /*
 API:
+	- chain_async
+	- chain_sync
 	- chainAsync
 	- chainSync
 */
@@ -67,3 +69,9 @@ export const chainSync = (...fns) => catchErrors(() => {
 		value: data[l-1]
 	}
 })
+
+export const chain_async = chainAsync
+export const chain_sync = chainSync
+
+
+

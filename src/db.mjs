@@ -8,6 +8,7 @@
 
 /*
 API:
+	- new_id
 	- newId
 */
 
@@ -44,3 +45,5 @@ export const newId = options => {
 	return t + n + BigInt(r)
 	/* eslint-enable */
 }
+
+export const new_id = newId
