@@ -264,7 +264,7 @@ Supported signatures:
 - `const [errors, value] = await catchErrors('Wrapper error message to give more context', myRiskyPromise)`
 
 ```js
-import { catchErrors, wrapErrors, wrapErrorsFn, wrapCustomErrors, mergeErrors, getErrorMetadata, PuffyResponse } from 'puffy-core/error'
+import { catchErrors, wrapErrors, wrapErrorsFn, wrapCustomErrors, mergeErrors, getErrorMetadata, PuffyResponse, required } from 'puffy-core/error'
 
 // 'catchErrors' always returns a 2 items array: [errors, data]. This array is of type 'PuffyResponse'.
 
@@ -276,8 +276,24 @@ const asyncFailWithMetadata = () => new Promise((_,fail) => fail(wrapCustomError
 const syncSucceed = () => 123
 const syncFail = () => { throw new Error('Boom') }
 
+const test_required = ({ hello, world }) => catch_errors(`'test_required' failed`, () => {
+	required({ hello, 'world.hello_again':world?.hello_again })
+
+	console.log(`'test_required' passed`)
+})
+
 const main = async options => {
 	const allErrors = []
+
+	// This will not fail because all the required properties have been passed.
+	const [test_required_01_errors] = test_required({ hello:'Hello', world:{hello_again:'hello_again'} })
+
+	// This will fail because the 'world.hello_again' property has not been passed.
+	const [test_required_02_errors] = test_required({ hello:'Hello' })
+	if (test_required_02_errors) {
+		console.log(`'test_required' failed`)
+		allErrors.push(...test_required_02_errors)
+	}
 
 	// Handles Promises 
 	const [errors01, data01] = await catchErrors(asyncSucceed())
