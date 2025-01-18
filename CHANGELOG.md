@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [1.3.0](https://github.com/nicolasdao/puffy-core/compare/v1.2.0...v1.3.0) (2025-01-18)
+
+
+### Features
+
+* Add support for snake-case APIs as well as a new required API in the error module ([c0a88da](https://github.com/nicolasdao/puffy-core/commit/c0a88da678f057a7d62a98f574049df7ee180b7e))
+
 ## [1.2.0](https://github.com/nicolasdao/puffy-core/compare/v1.1.0...v1.2.0) (2025-01-17)
 
 
