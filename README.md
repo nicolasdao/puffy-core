@@ -10,6 +10,7 @@ A collection of ES6 modules with zero-dependencies to help manage common program
 npm i puffy-core
 ```
 
+
 # Table of contents
 
 > * [APIs](#apis)
@@ -29,6 +30,9 @@ npm i puffy-core
 >	- [`time`](#time)
 >	- [`url`](#url)
 >	- [`validate`](#validate)
+> * [LLM system prompts](#llm-system-prompts)
+> 	- [Overview](#overview)
+> 	- [Error handling](#error-handling)
 > * [Dev](#dev)
 >	- [About this project](#about-this-project)
 >	- [Building this project for both CommonJS and ES6 modules](#building-this-project-for-both-commonjs-and-es6-modules)
@@ -753,6 +757,265 @@ console.log(validateUrl('hello')) // false
 console.log(validateEmail('nic@neap.co')) // true
 console.log(validateEmail('nic @neap.co')) // false
 ```
+
+# LLM system prompts
+
+## Overview
+This section provides premade system prompts that can be copy-pasted into coding agents to learn how to use each puffy-core API.
+
+## Error handling
+
+### CommonJS
+
+Wrap **all** functions—especially those doing I/O—with `catch_errors` from **puffy-core** (`npm i puffy-core`) to capture and propagate meaningful errors in a readable stack trace.
+
+**Core APIs**
+
+* **catch\_errors**
+
+    ```js
+    catch_errors(
+        'High-level context message',
+        () => /* sync fn */             // or async: async () => …
+    )
+    // → [errors, result]
+    // If `errors` ≠ null, the operation failed.
+    ```
+
+    * Always provide a clear context string.
+    * Never let errors fail silently; they bubble up as `errors`.
+
+* **wrap\_errors**
+
+    ```js
+    const { error: { catch_errors, wrap_errors: e } } = require('puffy-core')
+    // …
+    throw e('Specific failure reason', caughtErrors)
+    ```
+
+    * Alias as `e` for brevity.
+    * Wrap caught errors with extra context before re-throwing.
+
+---
+
+## 1. Synchronous Example
+
+```js
+const { error: { catch_errors, wrap_errors: e } } = require('puffy-core')
+
+const processDataSync = input => {
+    if (!input || typeof input !== 'string')
+        throw new Error('Invalid input: Expected non-empty string.')
+    if (input === 'fail')
+        throw new Error('Simulated failure.')
+    return `Processed: ${input.toUpperCase()}`
+}
+
+const handleSync = data => {
+    const [errors, result] = catch_errors(
+        'Failed to handle sync operation',
+        () => {
+            const [innerErr, processed] = catch_errors(
+                'Failed to process data synchronously',
+                () => processDataSync(data)
+            )
+            if (innerErr) throw e('Data processing step failed', innerErr)
+            return `Result: ${processed}`
+        }
+    )
+
+    if (errors) {
+        console.error('handleSync errors:')
+        errors.forEach(err => console.error(`- ${err.message}`))
+        return null
+    }
+    console.log('handleSync result:', result)
+    return result
+}
+
+handleSync('test')
+handleSync('fail')
+handleSync(null)
+```
+
+---
+
+## 2. Asynchronous Example
+
+```js
+const { error: { catch_errors, wrap_errors: e } } = require('puffy-core')
+
+const fetchData = async id =>
+    new Promise((res, rej) => {
+        setTimeout(() => {
+            if (id === 0) rej(new Error('Network error.'))
+            else if (id < 0) rej(new Error(`Not found: ${id}`))
+            else res({ id, data: `Data for ${id}` })
+        }, 10)
+    })
+
+const handleAsync = async id => {
+    const [errors, result] = await catch_errors(
+        'Failed to handle async operation',
+        async () => {
+            const [fetchErr, fetched] = await catch_errors(
+                `Failed to fetch data for item ${id}`,
+                fetchData(id)
+            )
+            if (fetchErr) throw e('Data fetch step failed', fetchErr)
+            return `Fetched: ${JSON.stringify(fetched)}`
+        }
+    )
+
+    if (errors) {
+        console.error('handleAsync errors:')
+        errors.forEach(err => console.error(`- ${err.message}`))
+        return null
+    }
+    console.log('handleAsync result:', result)
+    return result
+}
+
+;(async () => {
+    await handleAsync(1)
+    await handleAsync(0)
+    await handleAsync(-1)
+})()
+```
+
+---
+
+**Remember:**
+
+* Always wrap each step with `catch_errors('context', …)`.
+* On inner failure, `throw e('step context', caughtErrors)`.
+* Log or re-throw the aggregated `errors` for full traceability.
+
+### ES Modules
+
+Wrap **all** functions—especially those doing I/O—with `catch_errors` from **puffy-core** (`npm i puffy-core`) to capture and propagate meaningful errors in a readable stack trace.
+
+**Core APIs**
+
+* **catch\_errors**
+
+    ```js
+    catch_errors(
+        'High-level context message',
+        () => /* sync fn */             // or async: async () => …
+    )
+    // → [errors, result]
+    // If `errors` ≠ null, the operation failed.
+    ```
+
+    * Always provide a clear context string.
+    * Never let errors fail silently; they bubble up as `errors`.
+
+* **wrap\_errors**
+
+    ```js
+    import { catch_errors, wrap_errors as e } from 'puffy-core/error';
+    // …
+    throw e('Specific failure reason', caughtErrors)
+    ```
+
+    * Alias as `e` for brevity.
+    * Wrap caught errors with extra context before re-throwing.
+
+---
+
+## 1. Synchronous Example
+
+```js
+import { catch_errors, wrap_errors as e } from 'puffy-core/error'
+
+export const processDataSync = input => {
+    if (!input || typeof input !== 'string')
+        throw new Error('Invalid input: Expected non-empty string.')
+    if (input === 'fail')
+        throw new Error('Simulated failure.')
+    return `Processed: ${input.toUpperCase()}`
+}
+
+export const handleSync = data => {
+    const [errors, result] = catch_errors(
+        'Failed to handle sync operation',
+        () => {
+            const [innerErr, processed] = catch_errors(
+                'Failed to process data synchronously',
+                () => processDataSync(data)
+            )
+            if (innerErr) throw e('Data processing step failed', innerErr)
+            return `Result: ${processed}`
+        }
+    )
+
+    if (errors) {
+        console.error('handleSync errors:')
+        errors.forEach(err => console.error(`- ${err.message}`))
+        return null
+    }
+    console.log('handleSync result:', result)
+    return result
+}
+
+handleSync('test')
+handleSync('fail')
+handleSync(null)
+```
+
+---
+
+## 2. Asynchronous Example
+
+```js
+import { catch_errors, wrap_errors as e } from 'puffy-core/error'
+
+export const fetchData = async id =>
+    new Promise((res, rej) => {
+        setTimeout(() => {
+            if (id === 0) rej(new Error('Network error.'))
+            else if (id < 0) rej(new Error(`Not found: ${id}`))
+            else res({ id, data: `Data for ${id}` })
+        }, 10)
+    })
+
+export const handleAsync = async id => {
+    const [errors, result] = await catch_errors(
+        'Failed to handle async operation',
+        async () => {
+            const [fetchErr, fetched] = await catch_errors(
+                `Failed to fetch data for item ${id}`,
+                fetchData(id)
+            )
+            if (fetchErr) throw e('Data fetch step failed', fetchErr)
+            return `Fetched: ${JSON.stringify(fetched)}`
+        }
+    )
+
+    if (errors) {
+        console.error('handleAsync errors:')
+        errors.forEach(err => console.error(`- ${err.message}`))
+        return null
+    }
+    console.log('handleAsync result:', result)
+    return result
+}
+
+(async () => {
+    await handleAsync(1)
+    await handleAsync(0)
+    await handleAsync(-1)
+})();
+```
+
+---
+
+**Remember:**
+
+* Always wrap each step with `catch_errors('context', …)`.
+* On inner failure, `throw e('step context', caughtErrors)`.
+* Log or re-throw the aggregated `errors` for full traceability.
 
 # Dev
 ## About this project
